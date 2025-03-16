@@ -9,7 +9,7 @@ namespace TerrainGenerator.Components.Settings.Chunks
         [Min(0)]
         public float chunkSize;
         [Expandable]
-        public ChunkLODInfo[] chunkLODSettings;
+        public ChunkLODSettings[] chunkLODSettings;
         public float chunkPreloadMaxDistance;
     }
 }

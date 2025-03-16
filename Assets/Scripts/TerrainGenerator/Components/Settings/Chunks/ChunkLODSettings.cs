@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace TerrainGenerator.Components.Settings.Chunks
 {
-    [CreateAssetMenu(fileName = "ChunkLODInfo", menuName = "Terrain Generator/Chunk LOD Info")]
-    public class ChunkLODInfo : ScriptableObject
+    [CreateAssetMenu(fileName = "ChunkLODSettings", menuName = "Terrain Generator/Chunk LOD Settings")]
+    public class ChunkLODSettings : ScriptableObject
     {
         public MeshFillType meshFillType;
         [Range(2, 512)]
