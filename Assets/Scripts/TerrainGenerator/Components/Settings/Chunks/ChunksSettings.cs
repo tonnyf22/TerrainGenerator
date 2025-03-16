@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TerrainGenerator.Components.Settings.Chunks
 {
-    [CreateAssetMenu(fileName = "ChunksSettings", menuName = "Terrain Generator/Chunks Settings")]
+    [CreateAssetMenu(fileName = "ChunksSettings", menuName = "Terrain Generator/Chunks/Chunks Settings")]
     public class ChunksSettings : ScriptableObject
     {
         [Min(0)]

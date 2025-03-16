@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TerrainGenerator.Components.Settings.Chunks
 {
-    [CreateAssetMenu(fileName = "ChunkLODSettings", menuName = "Terrain Generator/Chunk LOD Settings")]
+    [CreateAssetMenu(fileName = "ChunkLODSettings", menuName = "Terrain Generator/Chunks/Chunk LOD Settings")]
     public class ChunkLODSettings : ScriptableObject
     {
         public MeshFillType meshFillType;

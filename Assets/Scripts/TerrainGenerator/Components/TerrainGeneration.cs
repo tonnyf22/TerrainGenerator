@@ -22,9 +22,9 @@ namespace TerrainGenerator.Components
 
         [Space(20)]
 
-        [Header("Bioms settings")]
+        [Header("Bioms system settings")]
         [HorizontalLine()]
         [Expandable]
-        public BiomsSettings biomsSettings;
+        public BiomsSystemSettings biomsSystemSettings;
     }
 }
