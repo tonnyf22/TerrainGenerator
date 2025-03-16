@@ -166,7 +166,7 @@ MonoBehaviour:
   seed: 
   generationCenter: {fileID: 879789459}
   chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
-  biomsSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
+  biomsSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
