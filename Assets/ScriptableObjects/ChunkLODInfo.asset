@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e9a366cadb21fcaab93f9a73112488, type: 3}
   m_Name: ChunkLODInfo
   m_EditorClassIdentifier: 
-  meshFillType: 0
-  meshResolution: 2
-  maxDistance: 0
+  meshFillType: 2
+  meshResolution: 181
+  maxDistance: 1.29
+  waterGridCoveringResolution: 16

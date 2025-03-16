@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace TerrainGenerator.Components.Settings.Chunks
@@ -5,9 +6,10 @@ namespace TerrainGenerator.Components.Settings.Chunks
     [CreateAssetMenu(fileName = "ChunksSettings", menuName = "Terrain Generator/Chunks Settings")]
     public class ChunksSettings : ScriptableObject
     {
-        [Range(0, 100.0f)]
+        [Min(0)]
         public float chunkSize;
-        public ChunkLODInfo[] chunkLODInfos;
+        [Expandable]
+        public ChunkLODInfo[] chunkLODSettings;
         public float chunkPreloadMaxDistance;
     }
 }
