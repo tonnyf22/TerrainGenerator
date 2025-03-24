@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2fc0cab6a60d95da990b32674275d8c, type: 3}
   m_Name: BiomsSystemSettings
   m_EditorClassIdentifier: 
+  biomGridCellSize: 4.11
+  biomSubgridCellSize: 0.63
+  scatteringsInterblendLevel: 2
+  biomsSettings:
+  - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
+  - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
+  - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
+  - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
+  - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
