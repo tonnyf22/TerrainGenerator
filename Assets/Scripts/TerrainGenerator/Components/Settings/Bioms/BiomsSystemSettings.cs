@@ -8,9 +8,7 @@ namespace TerrainGenerator.Components.Settings.Bioms
     {
         public float biomGridCellSize;
         public float biomSubgridCellSize;
-        [Range(1, 3)]
         public int scatteringsInterblendLevel = 1;
-        [Expandable]
         public BiomSettings[] biomsSettings;
     }
 }
