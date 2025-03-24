@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6aca0204cdfdbdcc9893b2b6cbf7430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 
+  seed: ASQF4242E413135AFE42408
   generationCenter: {fileID: 879789459}
   chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
   biomsSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
