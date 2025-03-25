@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TerrainGenerator.Generation.Surface.Structure
+namespace TerrainGenerator.Generation.Structure
 {
     public struct ChunkCoordinates
     {

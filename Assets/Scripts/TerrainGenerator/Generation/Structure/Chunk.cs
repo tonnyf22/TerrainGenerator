@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TerrainGenerator.Generation.Surface.Structure
+namespace TerrainGenerator.Generation.Structure
 {
     public class Chunk
     {
@@ -70,6 +70,18 @@ namespace TerrainGenerator.Generation.Surface.Structure
             else
             {
                 detalizationLevels.Add(levelIndex, detalizationLevel);
+            }
+        }
+
+        public DetalizationLevel GetDetalizationLevel(int levelIndex)
+        {
+            if (!detalizationLevels.ContainsKey(levelIndex))
+            {
+                throw new ArgumentException($"Detalization level index {levelIndex} is not exists for this chunk.");
+            }
+            else
+            {
+                return detalizationLevels[levelIndex];
             }
         }
 
