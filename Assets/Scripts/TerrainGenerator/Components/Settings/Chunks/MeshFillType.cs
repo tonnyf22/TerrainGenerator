@@ -4,7 +4,6 @@ namespace TerrainGenerator.Components.Settings.Chunks
     {
         QuadGrid,
         QuadGridStars,
-        QuadGridZigzag,
-        Triangular
+        QuadGridZigzag
     }
 }
