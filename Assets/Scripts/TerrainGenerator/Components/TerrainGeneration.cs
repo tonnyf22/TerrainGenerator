@@ -3,7 +3,7 @@ using TerrainGenerator.Components.Settings.Chunks;
 using NaughtyAttributes;
 using UnityEngine;
 using System.Collections.Generic;
-using TerrainGenerator.Generation.Surface.Structure;
+using TerrainGenerator.Generation.Structure;
 
 namespace TerrainGenerator.Components
 {
