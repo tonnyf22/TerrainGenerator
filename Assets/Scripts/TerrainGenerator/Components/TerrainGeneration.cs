@@ -1,4 +1,4 @@
-using TerrainGenerator.Components.Settings.Bioms;
+using TerrainGenerator.Components.Settings.Biomes;
 using TerrainGenerator.Components.Settings.Chunks;
 using NaughtyAttributes;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace TerrainGenerator.Components
         public string seed;
         public Transform generationCenter;
         public ChunksSettings chunksSettings;
-        public BiomsSystemSettings biomsSystemSettings;
+        public BiomesSystemSettings biomsSystemSettings;
 
         public Dictionary<ChunkCoordinates, Chunk> chunks = new Dictionary<ChunkCoordinates, Chunk>();
 
