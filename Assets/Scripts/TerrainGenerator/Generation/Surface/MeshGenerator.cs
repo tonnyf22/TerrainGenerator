@@ -58,7 +58,7 @@ namespace TerrainGenerator.Generation.Surface
                     throw new ArgumentOutOfRangeException(
                         nameof(meshFillType),
                         meshFillType,
-                        "Unsupported FillType.");
+                        "Unsupported MeshFillType.");
             }
         }
 
