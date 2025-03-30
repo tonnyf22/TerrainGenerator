@@ -1,0 +1,159 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6088493271476060804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0e819cfa69443d18b35bfa33bfe881, type: 3}
+  m_Name: Input
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -520, y: -72}
+  ports:
+    keys:
+    - InputPointX
+    - InputPointZ
+    - ChunkSize
+    - ChunkCoordinatesX
+    - ChunkCoordinatesZ
+    values:
+    - _fieldName: InputPointX
+      _node: {fileID: -6088493271476060804}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: InputPointZ
+      _node: {fileID: -6088493271476060804}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ChunkSize
+      _node: {fileID: -6088493271476060804}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ChunkCoordinatesX
+      _node: {fileID: -6088493271476060804}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ChunkCoordinatesZ
+      _node: {fileID: -6088493271476060804}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  inputPointX: 0
+  inputPointZ: 0
+  chunkSize: 0
+  chunkCoordinatesX: 0
+  chunkCoordinatesZ: 0
+  InputPointX: 0
+  InputPointZ: 0
+  ChunkSize: 0
+  ChunkCoordinatesX: 0
+  ChunkCoordinatesZ: 0
+--- !u!114 &-4553835674119475740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0944bfa518b022e8cd2390d922f117, type: 3}
+  m_Name: Output
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -56}
+  ports:
+    keys:
+    - Height
+    - ScatteringPoints1
+    - ScatteringPoints2
+    - ScatteringPoints3
+    values:
+    - _fieldName: Height
+      _node: {fileID: -4553835674119475740}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ScatteringPoints1
+      _node: {fileID: -4553835674119475740}
+      _typeQualifiedName: UnityEngine.Vector3[], UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ScatteringPoints2
+      _node: {fileID: -4553835674119475740}
+      _typeQualifiedName: UnityEngine.Vector3[], UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: ScatteringPoints3
+      _node: {fileID: -4553835674119475740}
+      _typeQualifiedName: UnityEngine.Vector3[], UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  Height: 0
+  ScatteringPoints1: []
+  ScatteringPoints2: []
+  ScatteringPoints3: []
+  height: 0
+  scatteringPoints1: []
+  scatteringPoints2: []
+  scatteringPoints3: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8137892c5886e2e0fa1220ba2ed4abea, type: 3}
+  m_Name: BiomeGraphLands
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -6088493271476060804}
+  - {fileID: -4553835674119475740}
