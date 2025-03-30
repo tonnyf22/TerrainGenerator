@@ -77,14 +77,12 @@ namespace TerrainGenerator.Generation.Biome
 
         private int MakeInitialCombinedHash(int[] xRawInts)
         {
-            Random random = new Random(seedInt);
-
             int hash = 0;
             for (int index = 0; index < xRawInts.Length; index++)
             {
                 hash ^= 
                     xRawInts[index] * 
-                    random.Next(0, int.MaxValue);
+                    seedInt;
             }
             return hash;
         }
