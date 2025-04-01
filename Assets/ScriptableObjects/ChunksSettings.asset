@@ -17,6 +17,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
   - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
   - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
-  - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
-  - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
-  chunkPreloadMaxDistance: 14.62
+  chunkPreloadMaxDistance: 15
