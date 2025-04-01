@@ -117,7 +117,7 @@ namespace TerrainGenerator.Generation.Biome
         }
 
         // biome subcell to biome subsource point
-        public BiomeSubsourcePoint LocateBiomeSubsourcePointByBiomSubCellCoordinates(BiomeSubcellCoordinate biomeSubcellCoordinate)
+        public BiomeSubsourcePoint LocateBiomeSubsourcePointByBiomeSubcellCoordinates(BiomeSubcellCoordinate biomeSubcellCoordinate)
         {
             if (biomeSubcellsToSubsources.ContainsKey(biomeSubcellCoordinate))
             {
@@ -209,6 +209,46 @@ namespace TerrainGenerator.Generation.Biome
             }
 
             return biomeIndexOfClosestSourcePoint;
+        }
+
+        public BiomeSubsourcePoint[] CalculateSurroundingBiomeSubsourcePoints(BiomeSubcellCoordinate biomeSubcellCoordinate)
+        {
+            BiomeSubcellCoordinate[] biomeSubcellCoordinates = CalculateSurroundingBiomeSubcellCoordinates(biomeSubcellCoordinate);
+            return CalculateSurroundingBiomeSubsourcePoints(biomeSubcellCoordinates);
+        }
+
+        private BiomeSubcellCoordinate[] CalculateSurroundingBiomeSubcellCoordinates(BiomeSubcellCoordinate biomeSubcellCoordinate)
+        {
+            List<BiomeSubcellCoordinate> biomeSubcellCoordinates = new List<BiomeSubcellCoordinate>();
+
+            for (int shiftX = -1; shiftX < 2; shiftX++)
+            {
+                for (int shiftZ = -1; shiftZ < 2; shiftZ++)
+                {
+                    if (shiftX != 0 && shiftZ != 0)
+                    {
+                        biomeSubcellCoordinates.Add(
+                            new BiomeSubcellCoordinate(
+                                biomeSubcellCoordinate.x + shiftX,
+                                biomeSubcellCoordinate.z + shiftZ));
+                    }
+                }
+            }
+
+            return biomeSubcellCoordinates.ToArray();
+        }
+
+        private BiomeSubsourcePoint[] CalculateSurroundingBiomeSubsourcePoints(BiomeSubcellCoordinate[] surroundingBiomeSubcellCoordinates)
+        {
+            List<BiomeSubsourcePoint> biomeSubsourcePoints = new List<BiomeSubsourcePoint>();
+
+            foreach (var item in surroundingBiomeSubcellCoordinates)
+            {
+                BiomeSubsourcePoint biomeSubsourcePoint = LocateBiomeSubsourcePointByBiomeSubcellCoordinates(item);
+                biomeSubsourcePoints.Add(biomeSubsourcePoint);
+            }
+
+            return biomeSubsourcePoints.ToArray();
         }
     }
 }
