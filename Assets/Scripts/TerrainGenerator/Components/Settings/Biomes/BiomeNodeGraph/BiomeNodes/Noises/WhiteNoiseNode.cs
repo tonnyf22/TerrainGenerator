@@ -48,7 +48,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			}
 		}
 
-		private float2 WhiteNoise2D()
+		private float WhiteNoise2D()
 		{
 			GetInputValue("x", x);
 			GetInputValue("z", z);
@@ -63,7 +63,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			return WhiteNoise(xz);
 		}
 
-		private float2 WhiteNoise3D()
+		private float WhiteNoise3D()
 		{
 			GetInputValue("x", x);
 			GetInputValue("z", z);
