@@ -32,6 +32,15 @@ namespace TerrainGenerator.Generation.Structure
             );
         }
 
+        public static Vector3 LocatePointInChunkAsPoint(float x, float z, ChunkCoordinates chunkCoordinates, float chunkSize)
+        {
+            return new Vector3(
+                chunkCoordinates.x * chunkSize + x,
+                0.0f,
+                chunkCoordinates.z * chunkSize + z
+            );
+        }
+
         public static Chunk CreateChunk(float chunkSize, ChunkCoordinates chunkCoordinates, GameObject parentGameObject)
         {
             return new Chunk(chunkSize, chunkCoordinates, parentGameObject);
