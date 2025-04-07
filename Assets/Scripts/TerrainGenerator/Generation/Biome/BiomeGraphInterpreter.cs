@@ -1,3 +1,4 @@
+using UnityEngine;
 using TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph;
 using TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.KeyNodes;
 
