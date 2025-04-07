@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2fc0cab6a60d95da990b32674275d8c, type: 3}
   m_Name: BiomesSystemSettings
   m_EditorClassIdentifier: 
-  biomeGridCellSize: 3
-  biomeSubgridCellSize: 0.5
-  displacementInterblendLevel: 2
+  biomeGridCellSize: 15
+  biomeSubgridCellSize: 6
+  displacementInterblendLevel: 1
   scatteringsInterblendLevel: 2
   biomesSettings:
   - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
