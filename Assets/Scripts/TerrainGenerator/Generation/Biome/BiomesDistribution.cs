@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +5,16 @@ namespace TerrainGenerator.Generation.Biome
 {
     public class BiomesDistribution
     {
+        public static BiomesDistribution CreateBiomesDistribution(int numberOfBiomes, string seed, float biomeCellSize, float biomeSubcellSize)
+        {
+            return new BiomesDistribution(
+                numberOfBiomes,
+                seed,
+                biomeCellSize,
+                biomeSubcellSize
+            );
+        }
+
         public readonly int numberOfBiomes;
         public readonly string seed;
         public readonly float biomeCellSize;
@@ -14,7 +23,7 @@ namespace TerrainGenerator.Generation.Biome
 
         private Dictionary<BiomeCellCoordinate, BiomeSourcePoint> biomeCellsToSources = new Dictionary<BiomeCellCoordinate, BiomeSourcePoint>();
         private Dictionary<BiomeSubcellCoordinate, BiomeSubsourcePoint> biomeSubcellsToSubsources = new Dictionary<BiomeSubcellCoordinate, BiomeSubsourcePoint>();
-
+        
         public BiomesDistribution(int numberOfBiomes, string seed, float biomeCellSize, float biomeSubcellSize)
         {
             this.numberOfBiomes = numberOfBiomes;
@@ -91,14 +100,20 @@ namespace TerrainGenerator.Generation.Biome
 
                 biomeCellsToSources.Add(biomeCellCoordinate, biomeSourcePoint);
 
+                // Source point
+                GameObject sourcePointGameObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                sourcePointGameObject.name = "SourcePoint";
+                sourcePointGameObject.transform.position = new Vector3(sourceX, 0.0f, sourceZ);
+                sourcePointGameObject.transform.localScale = Vector3.one * 0.1f;
+
                 return biomeSourcePoint;
             }
         }
 
         private (float, float) CalculateSourcePointCoordinates(BiomeCellCoordinate biomeCellCoordinate)
         {
-            float rawOffsetX = biomeDeterministicRandom.Value01(biomeCellCoordinate.x, biomeCellCoordinate.z);
-            float rawOffsetZ = biomeDeterministicRandom.Value01(biomeCellCoordinate.z, biomeCellCoordinate.x);
+            float rawOffsetX = biomeDeterministicRandom.Value01(biomeCellCoordinate.x, biomeCellCoordinate.z, 190337);
+            float rawOffsetZ = biomeDeterministicRandom.Value01(133719, biomeCellCoordinate.z, biomeCellCoordinate.x);
 
             Vector3 biomeCellPoint = LocateBiomeCellCoordinatesAsPoint(biomeCellCoordinate);
 
@@ -141,6 +156,12 @@ namespace TerrainGenerator.Generation.Biome
 
                 biomeSubcellsToSubsources.Add(biomeSubcellCoordinate, biomeSubsourcePoint);
 
+                // Subsource point
+                GameObject subsourcePointGameObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                subsourcePointGameObject.name = "SubsourcePoint";
+                subsourcePointGameObject.transform.position = new Vector3(subsourceX, 0.0f, subsourceZ);
+                subsourcePointGameObject.transform.localScale = Vector3.one * 0.05f;
+
                 return biomeSubsourcePoint;
             }
         }
@@ -153,7 +174,7 @@ namespace TerrainGenerator.Generation.Biome
             {
                 for (int shiftZ = -1; shiftZ < 2; shiftZ++)
                 {
-                    if (shiftX != 0 && shiftZ != 0)
+                    if (shiftX != 0 || shiftZ != 0)
                     {
                         biomeCellCoordinates.Add(
                             new BiomeCellCoordinate(
@@ -181,8 +202,8 @@ namespace TerrainGenerator.Generation.Biome
 
         private (float, float) CalculateSubsourcePointCoordinates(BiomeSubcellCoordinate biomeSubcellCoordinate)
         {
-            float rawOffsetX = biomeDeterministicRandom.Value01(biomeSubcellCoordinate.x, biomeSubcellCoordinate.z);
-            float rawOffsetZ = biomeDeterministicRandom.Value01(biomeSubcellCoordinate.z, biomeSubcellCoordinate.x);
+            float rawOffsetX = biomeDeterministicRandom.Value01(biomeSubcellCoordinate.x, biomeSubcellCoordinate.z, 131488);
+            float rawOffsetZ = biomeDeterministicRandom.Value01(biomeSubcellCoordinate.z, 234889, biomeSubcellCoordinate.x);
 
             Vector3 biomeSubcellPoint = LocateBiomeSubcellCoordinatesAsPoint(biomeSubcellCoordinate);
 
@@ -225,7 +246,7 @@ namespace TerrainGenerator.Generation.Biome
             {
                 for (int shiftZ = -1; shiftZ < 2; shiftZ++)
                 {
-                    if (shiftX != 0 && shiftZ != 0)
+                    if (shiftX != 0 || shiftZ != 0)
                     {
                         biomeSubcellCoordinates.Add(
                             new BiomeSubcellCoordinate(
