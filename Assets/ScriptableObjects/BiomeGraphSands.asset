@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Input
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -216, y: 104}
+  position: {x: -232, y: 56}
   ports:
     keys:
     - inputPointZ
@@ -27,9 +27,6 @@ MonoBehaviour:
       - fieldName: z
         node: {fileID: 5938404241284048164}
         reroutePoints: []
-      - fieldName: z
-        node: {fileID: 7719453381317172963}
-        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -42,18 +39,15 @@ MonoBehaviour:
       - fieldName: x
         node: {fileID: 5938404241284048164}
         reroutePoints: []
-      - fieldName: x
-        node: {fileID: 7719453381317172963}
-        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputPointXInput: 0
-  inputPointZInput: 0
+  inputPointXInput: 56
+  inputPointZInput: 56
   inputPointX: 0
   inputPointZ: 0
---- !u!114 &-5271511860834580962
+--- !u!114 &-4907542014186700411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -62,52 +56,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e0fbfde4181b82d83689d064672778, type: 3}
-  m_Name: Multiply
+  m_Script: {fileID: 11500000, guid: 4a28bafca18c2447eb514cd90238782a, type: 3}
+  m_Name: Inverse
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 760, y: 200}
+  position: {x: 600, y: 104}
   ports:
     keys:
-    - inputA
-    - inputB
+    - input
     - value
     values:
-    - _fieldName: inputA
-      _node: {fileID: -5271511860834580962}
+    - _fieldName: input
+      _node: {fileID: -4907542014186700411}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: value
-        node: {fileID: 4590471526040575334}
+        node: {fileID: 2589889377220111105}
         reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: inputB
-      _node: {fileID: -5271511860834580962}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: value
-      _node: {fileID: -5271511860834580962}
+      _node: {fileID: -4907542014186700411}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: height
-        node: {fileID: -131099461995441839}
+      - fieldName: inputA
+        node: {fileID: 2731961447056088864}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: 0
-  inputB: 3
+  input: 0.6468148
   value: 0
 --- !u!114 &-131099461995441839
 MonoBehaviour:
@@ -122,7 +105,7 @@ MonoBehaviour:
   m_Name: Output
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1048, y: 296}
+  position: {x: 1112, y: 120}
   ports:
     keys:
     - height
@@ -133,13 +116,13 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: value
-        node: {fileID: -5271511860834580962}
+        node: {fileID: 2731961447056088864}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  height: 0
+  height: -0.6468148
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,10 +139,10 @@ MonoBehaviour:
   - {fileID: -6580235138863741519}
   - {fileID: -131099461995441839}
   - {fileID: 5938404241284048164}
-  - {fileID: 7719453381317172963}
-  - {fileID: 4590471526040575334}
-  - {fileID: -5271511860834580962}
---- !u!114 &4590471526040575334
+  - {fileID: 2589889377220111105}
+  - {fileID: -4907542014186700411}
+  - {fileID: 2731961447056088864}
+--- !u!114 &2589889377220111105
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,11 +151,56 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2acb39e40f81a94c7b9b409a2dd7af2e, type: 3}
-  m_Name: Substract
+  m_Script: {fileID: 11500000, guid: 69eb5f60d80789a8f92b82da1f2c94a7, type: 3}
+  m_Name: Absolute
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 472, y: 232}
+  position: {x: 360, y: 8}
+  ports:
+    keys:
+    - input
+    - value
+    values:
+    - _fieldName: input
+      _node: {fileID: 2589889377220111105}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: valueF2
+        node: {fileID: 5938404241284048164}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: value
+      _node: {fileID: 2589889377220111105}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -4907542014186700411}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: 0.6468148
+  value: 0
+--- !u!114 &2731961447056088864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e0fbfde4181b82d83689d064672778, type: 3}
+  m_Name: Multiply
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 860.64795, y: 5.976143}
   ports:
     keys:
     - inputA
@@ -180,43 +208,40 @@ MonoBehaviour:
     - value
     values:
     - _fieldName: inputA
-      _node: {fileID: 4590471526040575334}
+      _node: {fileID: 2731961447056088864}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: valueF1
-        node: {fileID: 5938404241284048164}
+      - fieldName: value
+        node: {fileID: -4907542014186700411}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: inputB
-      _node: {fileID: 4590471526040575334}
+      _node: {fileID: 2731961447056088864}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: valueF2
-        node: {fileID: 7719453381317172963}
-        reroutePoints: []
+      connections: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: value
-      _node: {fileID: 4590471526040575334}
+      _node: {fileID: 2731961447056088864}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: inputA
-        node: {fileID: -5271511860834580962}
+      - fieldName: height
+        node: {fileID: -131099461995441839}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: 0
-  inputB: 0
+  inputA: -0.6468148
+  inputB: 2
   value: 0
 --- !u!114 &5938404241284048164
 MonoBehaviour:
@@ -231,7 +256,7 @@ MonoBehaviour:
   m_Name: Cellular Noise
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 200, y: -88}
+  position: {x: 104, y: -88}
   ports:
     keys:
     - x
@@ -317,10 +342,7 @@ MonoBehaviour:
       _node: {fileID: 5938404241284048164}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: inputA
-        node: {fileID: 4590471526040575334}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -329,144 +351,21 @@ MonoBehaviour:
       _node: {fileID: 5938404241284048164}
       _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  dimension: 0
-  x: 0
-  z: 0
-  y: 0
-  offsetX: 1.76
-  offsetZ: -5.88
-  offsetY: 0
-  scale: 1
-  valueF1: 0
-  valueF2: 0
---- !u!114 &7719453381317172963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1884bf623fb0500c8a64a116a7628dca, type: 3}
-  m_Name: Cellular Noise
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: 104, y: 168}
-  ports:
-    keys:
-    - x
-    - z
-    - y
-    - offsetX
-    - offsetZ
-    - offsetY
-    - scale
-    - valueF1
-    - valueF2
-    values:
-    - _fieldName: x
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: inputPointX
-        node: {fileID: -6580235138863741519}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: z
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: inputPointZ
-        node: {fileID: -6580235138863741519}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: y
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: offsetX
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: offsetZ
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: offsetY
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: scale
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: valueF1
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: valueF2
-      _node: {fileID: 7719453381317172963}
-      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: inputB
-        node: {fileID: 4590471526040575334}
+      - fieldName: input
+        node: {fileID: 2589889377220111105}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
   dimension: 0
-  x: 0
-  z: 0
+  x: 56
+  z: 56
   y: 0
-  offsetX: 1.99
-  offsetZ: 2.96
+  offsetX: 0
+  offsetZ: 0
   offsetY: 0
-  scale: 3
+  scale: 0.5
   valueF1: 0
   valueF2: 0
