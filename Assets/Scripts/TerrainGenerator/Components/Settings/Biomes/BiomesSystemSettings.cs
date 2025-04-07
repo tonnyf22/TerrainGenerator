@@ -8,7 +8,9 @@ namespace TerrainGenerator.Components.Settings.Biomes
     {
         public float biomeGridCellSize;
         public float biomeSubgridCellSize;
+        [Min(1)]
         public int displacementInterblendLevel = 1;
+        [Min(1)]
         public int scatteringsInterblendLevel = 1;
         public BiomeSettings[] biomesSettings;
     }
