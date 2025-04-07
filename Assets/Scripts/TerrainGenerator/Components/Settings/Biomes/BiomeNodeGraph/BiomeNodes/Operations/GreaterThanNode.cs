@@ -25,8 +25,8 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float GreaterThan()
 		{
-			GetInputValue("inputA", inputB);
-			GetInputValue("inputB", inputB);
+			inputA = GetInputValue("inputA", inputB);
+			inputB = GetInputValue("inputB", inputB);
 
 			switch (inputA > inputB)
 			{

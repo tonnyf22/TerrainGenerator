@@ -24,7 +24,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Inverse()
 		{
-			GetInputValue("input", input);
+			input = GetInputValue("input", input);
 
 			return input * (-1);
 		}

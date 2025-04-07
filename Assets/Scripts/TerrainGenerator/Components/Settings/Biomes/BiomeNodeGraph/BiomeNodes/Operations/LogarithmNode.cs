@@ -8,7 +8,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 	public class LogarithmNode : Node
 	{
 		[Input] public float input;
-		[Input] public float _base;
+		[Input] public float _base = math.E;
 
 		[Output] public float value;
 
@@ -26,8 +26,8 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Logarithm()
 		{
-			GetInputValue("input", input);
-			GetInputValue("base", _base);
+			input = GetInputValue("input", input);
+			_base = GetInputValue("base", _base);
 
 			return math.log(input) / math.log(_base);
 		}

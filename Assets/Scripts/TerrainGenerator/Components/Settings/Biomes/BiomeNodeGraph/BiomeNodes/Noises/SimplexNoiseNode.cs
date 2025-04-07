@@ -21,7 +21,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 		[Input] public float offsetY;
 		[Input] public float offsetW;
 
-		[Input] public float scale;
+		[Input] public float scale = 1.0f;
 
 		[Output] public float value;
 
@@ -52,11 +52,11 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float SimplexNoise2D()
 		{
-			GetInputValue("x", x);
-			GetInputValue("z", z);
-			GetInputValue("offsetX", offsetX);
-			GetInputValue("offsetZ", offsetZ);
-			GetInputValue("scale", scale);
+			x = GetInputValue("x", x);
+			z = GetInputValue("z", z);
+			offsetX = GetInputValue("offsetX", offsetX);
+			offsetZ = GetInputValue("offsetZ", offsetZ);
+			scale = GetInputValue("scale", scale);
 
 			float2 xz = new float2(
 				(x + offsetX) * scale,
@@ -67,13 +67,13 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float SimplexNoise3D()
 		{
-			GetInputValue("x", x);
-			GetInputValue("z", z);
-			GetInputValue("y", y);
-			GetInputValue("offsetX", offsetX);
-			GetInputValue("offsetZ", offsetZ);
-			GetInputValue("offsetY", offsetY);
-			GetInputValue("scale", scale);
+			x = GetInputValue("x", x);
+			z = GetInputValue("z", z);
+			y = GetInputValue("y", y);
+			offsetX = GetInputValue("offsetX", offsetX);
+			offsetZ = GetInputValue("offsetZ", offsetZ);
+			offsetY = GetInputValue("offsetY", offsetY);
+			scale = GetInputValue("scale", scale);
 
 			float3 xzy = new float3(
 				(x + offsetX) * scale,
@@ -85,15 +85,15 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float SimplexNoise4D()
 		{
-			GetInputValue("x", x);
-			GetInputValue("z", z);
-			GetInputValue("y", y);
-			GetInputValue("w", w);
-			GetInputValue("offsetX", offsetX);
-			GetInputValue("offsetZ", offsetZ);
-			GetInputValue("offsetY", offsetY);
-			GetInputValue("offsetW", offsetW);
-			GetInputValue("scale", scale);
+			x = GetInputValue("x", x);
+			z = GetInputValue("z", z);
+			y = GetInputValue("y", y);
+			w = GetInputValue("w", w);
+			offsetX = GetInputValue("offsetX", offsetX);
+			offsetZ = GetInputValue("offsetZ", offsetZ);
+			offsetY = GetInputValue("offsetY", offsetY);
+			offsetW = GetInputValue("offsetW", offsetW);
+			scale = GetInputValue("scale", scale);
 
 			float4 xzyw = new float4(
 				(x + offsetX) * scale,

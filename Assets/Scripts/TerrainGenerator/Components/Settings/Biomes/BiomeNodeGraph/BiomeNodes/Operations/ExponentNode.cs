@@ -25,7 +25,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Exponent()
 		{
-			GetInputValue("input", input);
+			input = GetInputValue("input", input);
 
 			return math.exp(input);
 		}

@@ -10,7 +10,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		public float GetHeightOutput()
 		{
-			GetInputValue("height", height);
+			height = GetInputValue("height", height);
 			return height;
 		}
 	}

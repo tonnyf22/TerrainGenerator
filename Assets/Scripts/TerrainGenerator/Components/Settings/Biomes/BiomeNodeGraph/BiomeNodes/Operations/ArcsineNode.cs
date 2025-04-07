@@ -25,7 +25,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Arcsine()
 		{
-			GetInputValue("input", input);
+			input = GetInputValue("input", input);
 
 			return math.asin(input);
 		}

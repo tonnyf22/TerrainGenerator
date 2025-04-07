@@ -1,5 +1,4 @@
-﻿using Unity.Mathematics;
-using UnityEngine;
+﻿using UnityEngine;
 using XNode;
 
 namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
@@ -28,9 +27,13 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Clamp()
 		{
-			GetInputValue("input", input);
-			GetInputValue("min", min);
-			GetInputValue("max", max);
+			input = GetInputValue("input", input);
+			min = GetInputValue("min", min);
+			max = GetInputValue("max", max);
+			if (min > max)
+			{
+				(max, min) = (min, max);
+			}
 
 			if (input < min)
 			{

@@ -27,11 +27,11 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Mix()
 		{
-			GetInputValue("factor", factor);
+			factor = GetInputValue("factor", factor);
 			factor = math.clamp(factor, 0.0f, 1.0f);  // precaution
 
-			GetInputValue("inputA", inputA);
-			GetInputValue("inputB", inputB);
+			inputA = GetInputValue("inputA", inputA);
+			inputB = GetInputValue("inputB", inputB);
 
 			return factor * inputA + (1 - factor) * inputB;
 		}

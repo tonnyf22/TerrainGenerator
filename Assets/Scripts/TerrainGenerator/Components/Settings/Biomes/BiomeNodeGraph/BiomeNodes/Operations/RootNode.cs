@@ -8,7 +8,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 	public class RootNode : Node
 	{
 		[Input] public float input;
-		[Input] public float index;
+		[Input, Min(1.0f)] public float index = 1.0f;
 
 		[Output] public float value;
 
@@ -26,8 +26,8 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Root()
 		{
-			GetInputValue("input", input);
-			GetInputValue("index", index);
+			input = GetInputValue("input", input);
+			index = GetInputValue("index", index);
 
 			return math.pow(input, 1.0f / index);
 		}

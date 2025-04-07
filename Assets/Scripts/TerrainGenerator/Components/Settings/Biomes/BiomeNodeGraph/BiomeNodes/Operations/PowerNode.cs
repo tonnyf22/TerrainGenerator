@@ -8,7 +8,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 	public class PowerNode : Node
 	{
 		[Input] public float input;
-		[Input] public float power;
+		[Input, Min(1.0f)] public float power = 1.0f;
 
 		[Output] public float value;
 
@@ -26,8 +26,8 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Power()
 		{
-			GetInputValue("input", input);
-			GetInputValue("power", power);
+			input = GetInputValue("input", input);
+			power = GetInputValue("power", power);
 
 			return math.pow(input, power);
 		}

@@ -26,8 +26,8 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 
 		private float Add()
 		{
-			GetInputValue("inputA", inputA);
-			GetInputValue("inputB", inputB);
+			inputA = GetInputValue("inputA", inputA);
+			inputB = GetInputValue("inputB", inputB);
 
 			return inputA + inputB;
 		}
