@@ -6,6 +6,7 @@ namespace TerrainGenerator.Generation.Biome
     {
         public readonly string seed;
         public readonly int seedInt;
+        private readonly int[] multipliers = { 138, 217, 931 };
 
         public BiomeDeterministicRandom(string seed)
         {
@@ -47,63 +48,29 @@ namespace TerrainGenerator.Generation.Biome
 
         private float Value01(float[] inputData)
         {
-            return NormalizedHashFromData(inputData);
-        }
+            int[] inputDataRawInts = FloatsToRawInts(inputData);
+            int seedLocal = seedInt;
+            for (int index = 0; index < inputDataRawInts.Length; index++)
+            {
+                seedLocal += inputDataRawInts[index] * multipliers[index];
+            }
+            Random random = new Random(seedLocal);
 
-        private float NormalizedHashFromData(float[] inputData)
-        {
-            int[] xRawInts = FloatsToRawInts(inputData);
+            float value = (float)random.NextDouble();
 
-            int hash;
-            hash = MakeInitialCombinedHash(xRawInts);
-            hash = XORShift(hash);
-            hash = MakePositiveOfHash(hash);
-
-            float normalizedHash = NormalizeHash(hash);
-            return normalizedHash;
+            return value;
         }
 
         private int[] FloatsToRawInts(float[] inputData)
         {
-            int[] xRawInts = new int[inputData.Length];
+            int[] inputDataRawInts = new int[inputData.Length];
 
-            for (int index = 0; index < xRawInts.Length; index++)
+            for (int index = 0; index < inputDataRawInts.Length; index++)
             {
-                xRawInts[index] = BitConverter.SingleToInt32Bits(inputData[index]);
+                inputDataRawInts[index] = BitConverter.SingleToInt32Bits(inputData[index]);
             }
 
-            return xRawInts;
-        }
-
-        private int MakeInitialCombinedHash(int[] xRawInts)
-        {
-            int hash = 0;
-            for (int index = 0; index < xRawInts.Length; index++)
-            {
-                hash ^= 
-                    xRawInts[index] * 
-                    seedInt;
-            }
-            return hash;
-        }
-
-        private int XORShift(int hash)
-        {
-            hash ^= hash >> 13;
-            hash ^= hash << 13;
-            hash ^= hash >> 17;
-            hash ^= hash << 5;
-            return hash;
-        }
-
-        private int MakePositiveOfHash(int hash)
-        {
-            return hash & 0x7FFFFFFF;
-        }
-
-        private float NormalizeHash(int hash)
-        {
-            return hash / (float)int.MaxValue;
+            return inputDataRawInts;
         }
     }
 }
