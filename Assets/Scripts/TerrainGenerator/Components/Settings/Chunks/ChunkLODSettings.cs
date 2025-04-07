@@ -10,6 +10,7 @@ namespace TerrainGenerator.Components.Settings.Chunks
         public int meshResolution = 2;
         public bool isApplyCollision;
         public bool isApplyWaterCovering = true;
+        public MeshFillType waterCoveringMeshFillType;
         public int waterCoveringMeshResolution = 2;
         public bool isApplyScattering = true;
         public bool isApplyScatteringSparcing;
