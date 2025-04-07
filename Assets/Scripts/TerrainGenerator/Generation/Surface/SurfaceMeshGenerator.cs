@@ -6,24 +6,34 @@ using UnityEngine;
 
 namespace TerrainGenerator.Generation.Surface
 {
-    public static class MeshGenerator
+    public class SurfaceMeshGenerator
     {
-        public static Mesh CreateMesh(Chunk chunk, DetalizationLevel detalizationLevel)
+        public static SurfaceMeshGenerator CreateSurfaceMeshGenerator(Chunk chunk)
+        {
+            return new SurfaceMeshGenerator(chunk);
+        }
+
+        public readonly Chunk chunk;
+
+        public SurfaceMeshGenerator(Chunk chunk)
+        {
+            this.chunk = chunk;
+        }
+
+        public Mesh CreateMesh(DetalizationLevel detalizationLevel)
         {
             Mesh mesh = new Mesh();
 
-            GenerateVertices(mesh, chunk.chunkSize, detalizationLevel.meshResolution);
+            GenerateVertices(mesh, detalizationLevel.meshResolution);
             GenerateTriangles(mesh, detalizationLevel.meshFillType, detalizationLevel.meshResolution);
-
-            RecalculateMeshAttributes(mesh);
 
             return mesh;
         }
 
-        private static void GenerateVertices(Mesh mesh, float chunkSize, int meshResolution)
+        private void GenerateVertices(Mesh mesh, int meshResolution)
         {
             List<Vector3> vertices = new List<Vector3>();
-            float verticesGapSize = chunkSize / (meshResolution - 1);
+            float verticesGapSize = chunk.chunkSize / (meshResolution - 1);
 
             for (int xIndex = 0; xIndex < meshResolution; xIndex++)
             {
@@ -41,7 +51,7 @@ namespace TerrainGenerator.Generation.Surface
             mesh.SetVertices(vertices);
         }
 
-        private static void GenerateTriangles(Mesh mesh, MeshFillType meshFillType, int meshResolution)
+        private void GenerateTriangles(Mesh mesh, MeshFillType meshFillType, int meshResolution)
         {
             switch (meshFillType)
             {
@@ -62,7 +72,7 @@ namespace TerrainGenerator.Generation.Surface
             }
         }
 
-        private static void GenerateTrianglesQuadGridMesh(Mesh mesh, int meshResolution)
+        private void GenerateTrianglesQuadGridMesh(Mesh mesh, int meshResolution)
         {
             List<int> triangles = new List<int>();
 
@@ -86,7 +96,7 @@ namespace TerrainGenerator.Generation.Surface
             mesh.SetTriangles(triangles, 0, false);
         }
 
-        private static void GenerateTrianglesQuadGridStarsMesh(Mesh mesh, int meshResolution)
+        private void GenerateTrianglesQuadGridStarsMesh(Mesh mesh, int meshResolution)
         {
             List<int> triangles = new List<int>();
 
@@ -121,7 +131,7 @@ namespace TerrainGenerator.Generation.Surface
             mesh.SetTriangles(triangles, 0, false);
         }
 
-        private static void GenerateTrianglesQuadGridZigzagMesh(Mesh mesh, int meshResolution)
+        private void GenerateTrianglesQuadGridZigzagMesh(Mesh mesh, int meshResolution)
         {
             List<int> triangles = new List<int>();
 
@@ -154,14 +164,6 @@ namespace TerrainGenerator.Generation.Surface
             }
 
             mesh.SetTriangles(triangles, 0, false);
-        }
-
-        // maybe move to outer class like "NormalsRecalculationManager"
-        public static void RecalculateMeshAttributes(Mesh mesh)
-        {
-            mesh.RecalculateNormals();
-            mesh.RecalculateBounds();
-            mesh.RecalculateTangents();
         }
     }
 }

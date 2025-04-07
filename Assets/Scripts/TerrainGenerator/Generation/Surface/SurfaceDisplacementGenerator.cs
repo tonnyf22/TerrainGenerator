@@ -1,15 +1,14 @@
-using System;
 using TerrainGenerator.Generation.Biome;
 using TerrainGenerator.Generation.Structure;
 using UnityEngine;
 
 namespace TerrainGenerator.Generation.Surface
 {
-    public class DisplacementGenerator
+    public class SurfaceDisplacementGenerator
     {
-        public static DisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static SurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
-            return new DisplacementGenerator(
+            return new SurfaceDisplacementGenerator(
                 chunk,
                 displacementInterblendLevel,
                 biomesDistribution,
@@ -22,7 +21,7 @@ namespace TerrainGenerator.Generation.Surface
         public readonly BiomesDistribution biomesDistribution;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
 
-        public DisplacementGenerator(Chunk chunk, int displacementInterblendLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public SurfaceDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.displacementInterblendLevel = displacementInterblendLevel;
@@ -133,7 +132,7 @@ namespace TerrainGenerator.Generation.Surface
 
         private float CalculateDistanceBetweenPoints(float fromX, float fromZ, float toX, float toZ)
         {
-            return Mathf.Sqrt(Mathf.Pow(fromX - toX, 2) - Mathf.Pow(fromZ - toZ, 2));
+            return Mathf.Sqrt(Mathf.Pow(fromX - toX, 2) + Mathf.Pow(fromZ - toZ, 2));
         }
 
         private float[] CalculateWeightsOfDistances(float[] distances)
