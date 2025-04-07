@@ -7,30 +7,37 @@ namespace TerrainGenerator.Generation.Structure
 {
     public class DetalizationLevel
     {
-        public static DetalizationLevel CreateDetalizationLevel(MeshFillType meshFillType, int meshResolution, bool isApplyCollision, GameObject parentGameObject)
+        public static DetalizationLevel CreateDetalizationLevel(MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
         {
             return new DetalizationLevel(
                 meshFillType,
                 meshResolution,
-                isApplyCollision,
+                // isApplyCollision,
                 parentGameObject
             );
         }
 
         public readonly MeshFillType meshFillType;
         public readonly int meshResolution;
-        public readonly bool isApplyCollision;
+        // public readonly bool isApplyCollision;
         public readonly GameObject detalizationLevelGameObject;
-        public readonly WaterCovering waterCovering;
+        public WaterCovering waterCovering { get; private set; }
         public readonly Dictionary<int, Scattering> scatterings;
 
-        public DetalizationLevel(MeshFillType meshFillType, int meshResolution, bool isApplyCollision, GameObject parentGameObject)
+        public DetalizationLevel(MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
         {
             this.meshFillType = meshFillType;
             this.meshResolution = meshResolution;
-            this.isApplyCollision = isApplyCollision;
+            // this.isApplyCollision = isApplyCollision;
             detalizationLevelGameObject = new GameObject("ChunkDetalizationLevel");
             detalizationLevelGameObject.transform.parent = parentGameObject.transform;
+            SetDetalizationLevelGameObjectCoordinates();
+            scatterings = new Dictionary<int, Scattering>();
+        }
+
+        private void SetDetalizationLevelGameObjectCoordinates()
+        {
+            detalizationLevelGameObject.transform.localPosition = Vector3.zero;
         }
 
         public void Show()
@@ -43,11 +50,35 @@ namespace TerrainGenerator.Generation.Structure
             detalizationLevelGameObject.SetActive(false);
         }
 
+        public void AddWaterCovering(WaterCovering waterCovering)
+        {
+            if (this.waterCovering != null)
+            {
+                throw new ArgumentException($"Water covering already exists for this detalization level.");
+            }
+            else
+            {
+                this.waterCovering = waterCovering;
+            }
+        }
+
+        public void RemoveWaterCovering()
+        {
+            if (this.waterCovering == null)
+            {
+                throw new ArgumentException($"Water covering does not exist for this detalization level.");
+            }
+            else
+            {
+                this.waterCovering = null;
+            }
+        }
+
         public void AddScattering(int index, Scattering scattering)
         {
             if (scatterings.ContainsKey(index))
             {
-                throw new ArgumentException($"Scattering index {index} is already exists for this detalization level.");
+                throw new ArgumentException($"Scattering index {index} already exists for this detalization level.");
             }
             else
             {
@@ -59,7 +90,7 @@ namespace TerrainGenerator.Generation.Structure
         {
             if (!scatterings.ContainsKey(index))
             {
-                throw new ArgumentException($"Scattering index {index} is not exists for this detalization level.");
+                throw new ArgumentException($"Scattering index {index} does not exist for this detalization level.");
             }
             else
             {
@@ -67,24 +98,24 @@ namespace TerrainGenerator.Generation.Structure
             }
         }
 
-        public void ApplyMesh(Mesh mesh)
+        public void ApplySurfaceMesh(Mesh mesh, Material material)
         {
-            if (detalizationLevelGameObject.TryGetComponent<MeshFilter>(out var meshFilter))
+            if (!detalizationLevelGameObject.TryGetComponent(out MeshFilter meshFilter))
             {
                 meshFilter = detalizationLevelGameObject.AddComponent<MeshFilter>();
             }
-            if (detalizationLevelGameObject.TryGetComponent<MeshRenderer>(out var meshRenderer))
+            if (!detalizationLevelGameObject.TryGetComponent(out MeshRenderer meshRenderer))
             {
                 meshRenderer = detalizationLevelGameObject.AddComponent<MeshRenderer>();
             }
 
             meshFilter.mesh = mesh;
-            // meshRenderer.material = ...;
+            meshRenderer.material = material;
         }
 
-        public void ApplyCollision(Mesh mesh)
+        public void ApplySurfaceCollision(Mesh mesh)
         {
-            if (detalizationLevelGameObject.TryGetComponent<MeshCollider>(out var meshCollider))
+            if (!detalizationLevelGameObject.TryGetComponent(out MeshCollider meshCollider))
             {
                 meshCollider = detalizationLevelGameObject.AddComponent<MeshCollider>();
             }
