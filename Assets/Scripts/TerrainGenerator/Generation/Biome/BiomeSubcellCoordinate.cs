@@ -1,6 +1,6 @@
 namespace TerrainGenerator.Generation.Biome
 {
-    public class BiomeSubcellCoordinate
+    public struct BiomeSubcellCoordinate
     {
         public readonly int x;
         public readonly int z;
