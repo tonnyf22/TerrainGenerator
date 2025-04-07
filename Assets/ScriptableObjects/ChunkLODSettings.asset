@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: ChunkLODSettings
   m_EditorClassIdentifier: 
   maxDistance: 4
-  meshFillType: 0
-  meshResolution: 64
+  meshFillType: 1
+  meshResolution: 33
   isApplyCollision: 1
-  waterCoveringMeshResolution: 2
+  isApplyWaterCovering: 1
+  waterCoveringMeshResolution: 9
   isApplyScattering: 1
   isApplyScatteringSparcing: 0
   scatteringSparceLevel: 1
