@@ -43,8 +43,8 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputPointXInput: 56
-  inputPointZInput: 56
+  inputPointXInput: 213.33333
+  inputPointZInput: 203.75
   inputPointX: 0
   inputPointZ: 0
 --- !u!114 &-2161447294565941625
@@ -114,8 +114,8 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   factor: 0
-  inputA: -3.1073594
-  inputB: 0
+  inputA: -2.8957071
+  inputB: -2
   value: 0
 --- !u!114 &-991452485118376092
 MonoBehaviour:
@@ -220,7 +220,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: -3.1073594
+  inputA: -2.8957071
   inputB: 0
   value: 0
 --- !u!114 &5547581689687993477
@@ -350,8 +350,8 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   dimension: 0
-  x: 56
-  z: 56
+  x: 213.33333
+  z: 203.75
   y: 0
   w: 0
   offsetX: 0
@@ -416,6 +416,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: -0.31073594
+  inputA: -0.28957072
   inputB: 10
   value: 0
