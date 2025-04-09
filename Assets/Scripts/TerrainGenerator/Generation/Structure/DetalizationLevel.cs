@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using TerrainGenerator.Components.Settings.Chunks;
+using UnityEditor;
 using UnityEngine;
 
 namespace TerrainGenerator.Generation.Structure
 {
     public class DetalizationLevel
     {
-        public static DetalizationLevel CreateDetalizationLevel(MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
+        public static DetalizationLevel CreateDetalizationLevel(int levelIndex, MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
         {
             return new DetalizationLevel(
+                levelIndex,
                 meshFillType,
                 meshResolution,
                 // isApplyCollision,
@@ -17,6 +19,7 @@ namespace TerrainGenerator.Generation.Structure
             );
         }
 
+        public readonly int levelIndex;
         public readonly MeshFillType meshFillType;
         public readonly int meshResolution;
         // public readonly bool isApplyCollision;
@@ -24,8 +27,9 @@ namespace TerrainGenerator.Generation.Structure
         public WaterCovering waterCovering { get; private set; }
         public readonly Dictionary<int, Scattering> scatterings;
 
-        public DetalizationLevel(MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
+        public DetalizationLevel(int levelIndex, MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
         {
+            this.levelIndex = levelIndex;
             this.meshFillType = meshFillType;
             this.meshResolution = meshResolution;
             // this.isApplyCollision = isApplyCollision;
@@ -111,6 +115,18 @@ namespace TerrainGenerator.Generation.Structure
 
             meshFilter.mesh = mesh;
             meshRenderer.material = material;
+        }
+
+        public Mesh GetSurfaceMesh()
+        {
+            if (!detalizationLevelGameObject.TryGetComponent<MeshFilter>(out var meshFilter))
+            {
+                throw new ArgumentException($"Mesh filter does not exist on this detalization level game object.");
+            }
+            else
+            {
+                return detalizationLevelGameObject.GetComponent<MeshFilter>().mesh;
+            }
         }
 
         public void ApplySurfaceCollision(Mesh mesh)
