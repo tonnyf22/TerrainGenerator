@@ -46,6 +46,7 @@ namespace TerrainGenerator.Components
                         chunksSettings.chunkSize,
                         new ChunkCoordinates(coordinateX, coordinateZ),
                         gameObject);
+                    chunks.Add(chunk.chunkCoordinates, chunk);
                     // surface mesh generator
                     SurfaceMeshGenerator surfaceMeshGenerator = new SurfaceMeshGenerator(chunk);
                     // surface displacement generator
@@ -57,6 +58,7 @@ namespace TerrainGenerator.Components
                     chunk.AddSurfaceDisplacementGenerator(surfaceDisplacementGenerator);
                     // detalization level
                     DetalizationLevel detalizationLevel0 = DetalizationLevel.CreateDetalizationLevel(
+                        0,
                         chunksSettings.chunkLODSettings[0].meshFillType,
                         chunksSettings.chunkLODSettings[0].meshResolution,
                         // true,
@@ -72,9 +74,30 @@ namespace TerrainGenerator.Components
                     // surface mesh
                     Mesh meshSurface = surfaceMeshGenerator.CreateMesh(detalizationLevel0);
                     surfaceDisplacementGenerator.ApplyDisplacementToMesh(meshSurface);
-                    MeshAttributesManager.RecalculateMeshNormals(meshSurface);
                     detalizationLevel0.ApplySurfaceCollision(meshSurface);
                     detalizationLevel0.ApplySurfaceMesh(meshSurface, materialSurface);
+                    // surface normals
+                    MeshNormalsGenerator.RecalculateMeshNormals(meshSurface);
+                    for (int xIndex = -1; xIndex < 2; xIndex++)
+                    {
+                        for (int zIndex = -1; zIndex < 2; zIndex++)
+                        {
+                            if (xIndex != 0 || zIndex != 0)
+                            {
+                                ChunkCoordinates chunkCoordinatesNext = new ChunkCoordinates(
+                                    chunk.chunkCoordinates.x + xIndex,
+                                    chunk.chunkCoordinates.z + zIndex);
+                                if (chunks.ContainsKey(chunkCoordinatesNext))
+                                {
+                                    MeshNormalsGenerator.RecalculateMeshEdgeNormals(
+                                        0,
+                                        chunk,
+                                        chunks[chunkCoordinatesNext]
+                                    );
+                                }
+                            }
+                        }
+                    }
                     // water mesh
                     WaterMeshGenerator waterMeshGenerator = WaterMeshGenerator.CreateWaterMeshGenerator(chunk);
                     chunk.AddWaterMeshGenerator(waterMeshGenerator);
