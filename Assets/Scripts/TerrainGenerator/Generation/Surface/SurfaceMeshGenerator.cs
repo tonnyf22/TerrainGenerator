@@ -39,12 +39,7 @@ namespace TerrainGenerator.Generation.Surface
             {
                 for (int zIndex = 0; zIndex < meshResolution; zIndex++)
                 {
-                    float xCoordinate = xIndex * verticesGapSize;
-                    float zCoordinate = zIndex * verticesGapSize;
-
-                    Vector3 vertex = new Vector3(xCoordinate, 0.0f, zCoordinate);
-
-                    vertices.Add(vertex);
+                    CreateAndStoreVertex(xIndex, zIndex, verticesGapSize, vertices);
                 }
             }
 
@@ -80,16 +75,7 @@ namespace TerrainGenerator.Generation.Surface
             {
                 for (int zIndex = 0; zIndex < meshResolution - 1; zIndex++)
                 {
-                    int v1 = xIndex * meshResolution + zIndex;
-                    int v2 = xIndex * meshResolution + zIndex + 1;
-                    int v3 = (xIndex + 1) * meshResolution + zIndex;
-                    int v4 = (xIndex + 1) * meshResolution + zIndex + 1;
-
-                    triangles.AddRange(
-                        new int[]{
-                            v1, v2, v4,
-                            v4, v3, v1
-                        });
+                    CreateAndStoreTriangleQuadGrid(xIndex, zIndex, meshResolution, triangles);
                 }
             }
 
@@ -104,27 +90,7 @@ namespace TerrainGenerator.Generation.Surface
             {
                 for (int zIndex = 0; zIndex < meshResolution - 1; zIndex++)
                 {
-                    int v1 = xIndex * meshResolution + zIndex;
-                    int v2 = xIndex * meshResolution + zIndex + 1;
-                    int v3 = (xIndex + 1) * meshResolution + zIndex;
-                    int v4 = (xIndex + 1) * meshResolution + zIndex + 1;
-
-                    if (xIndex % 2 == zIndex % 2)
-                    {
-                        triangles.AddRange(
-                            new int[]{
-                                v1, v2, v4,
-                                v4, v3, v1
-                            });
-                    }
-                    else // if (xIndex % 2 != zIndex % 2)
-                    {
-                        triangles.AddRange(
-                            new int[]{
-                                v3, v1, v2,
-                                v2, v4, v3
-                            });
-                    }
+                    CreateAndStoreTriangleQuadGridStars(xIndex, zIndex, meshResolution, triangles);
                 }
             }
 
@@ -139,31 +105,85 @@ namespace TerrainGenerator.Generation.Surface
             {
                 for (int zIndex = 0; zIndex < meshResolution - 1; zIndex++)
                 {
-                    int v1 = xIndex * meshResolution + zIndex;
-                    int v2 = xIndex * meshResolution + zIndex + 1;
-                    int v3 = (xIndex + 1) * meshResolution + zIndex;
-                    int v4 = (xIndex + 1) * meshResolution + zIndex + 1;
-
-                    if (zIndex % 2 == 0)
-                    {
-                        triangles.AddRange(
-                            new int[]{
-                                v1, v2, v4,
-                                v4, v3, v1
-                            });
-                    }
-                    else // if (zIndex % 2 == 1)
-                    {
-                        triangles.AddRange(
-                            new int[]{
-                                v3, v1, v2,
-                                v2, v4, v3
-                            });
-                    }
+                    CreateAndStoreTriangleQuadGridZigzag(xIndex, zIndex, meshResolution, triangles);
                 }
             }
 
             mesh.SetTriangles(triangles, 0, false);
+        }
+
+        private void CreateAndStoreVertex(int xIndex, int zIndex, float verticesGapSize, List<Vector3> verticesBlock)
+        {
+            float xCoordinate = xIndex * verticesGapSize;
+            float zCoordinate = zIndex * verticesGapSize;
+
+            Vector3 vertex = new Vector3(xCoordinate, 0.0f, zCoordinate);
+
+            verticesBlock.Add(vertex);
+        }
+
+        private void CreateAndStoreTriangleQuadGrid(int xIndex, int zIndex, int meshResolution, List<int> triangles)
+        {
+            int v1 = xIndex * meshResolution + zIndex;
+            int v2 = xIndex * meshResolution + zIndex + 1;
+            int v3 = (xIndex + 1) * meshResolution + zIndex;
+            int v4 = (xIndex + 1) * meshResolution + zIndex + 1;
+
+            triangles.AddRange(
+                new int[]{
+                    v1, v2, v4,
+                    v4, v3, v1
+                });
+        }
+
+        private void CreateAndStoreTriangleQuadGridStars(int xIndex, int zIndex, int meshResolution, List<int> triangles)
+        {
+            int v1 = xIndex * meshResolution + zIndex;
+            int v2 = xIndex * meshResolution + zIndex + 1;
+            int v3 = (xIndex + 1) * meshResolution + zIndex;
+            int v4 = (xIndex + 1) * meshResolution + zIndex + 1;
+
+            if (xIndex % 2 == zIndex % 2)
+            {
+                triangles.AddRange(
+                    new int[]{
+                        v1, v2, v4,
+                        v4, v3, v1
+                    });
+            }
+            else // if (xIndex % 2 != zIndex % 2)
+            {
+                triangles.AddRange(
+                    new int[]{
+                        v3, v1, v2,
+                        v2, v4, v3
+                    });
+            }
+        }
+
+        private void CreateAndStoreTriangleQuadGridZigzag(int xIndex, int zIndex, int meshResolution, List<int> triangles)
+        {
+            int v1 = xIndex * meshResolution + zIndex;
+            int v2 = xIndex * meshResolution + zIndex + 1;
+            int v3 = (xIndex + 1) * meshResolution + zIndex;
+            int v4 = (xIndex + 1) * meshResolution + zIndex + 1;
+
+            if (zIndex % 2 == 0)
+            {
+                triangles.AddRange(
+                    new int[]{
+                        v1, v2, v4,
+                        v4, v3, v1
+                    });
+            }
+            else // if (zIndex % 2 == 1)
+            {
+                triangles.AddRange(
+                    new int[]{
+                        v3, v1, v2,
+                        v2, v4, v3
+                    });
+            }
         }
     }
 }
