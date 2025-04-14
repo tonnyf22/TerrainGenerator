@@ -1,33 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TerrainGenerator.Generation.Structure
 {
-    public class Scattering
+    public class ObjectsScattering
     {
-        public static Scattering CreateScattering(/* bool isApplyScattering, bool isApplyScatteringSparceLevel, */ int scatteringSparceLevel, GameObject parentGameObject)
+        public static ObjectsScattering CreateScattering(/* bool isApplyScattering, bool isApplyScatteringSparceLevel, */ int scatteringSparceLevel, GameObject parentGameObject)
         {
-            return new Scattering(
+            return new ObjectsScattering(
                 // isApplyScattering,
                 // isApplyScatteringSparceLevel,
                 scatteringSparceLevel,
                 parentGameObject);
         }
 
-        public readonly bool isApplyScattering;
-        public readonly bool isApplyScatteringSparceLevel;
-        public readonly int scatteringSparceLevel;
+        // public readonly bool isApplyScattering;
+        // public readonly bool isApplyScatteringSparceLevel;
+        public readonly int scatteringSparseLevel;
         public readonly GameObject scatteringGameObject;
 
-        public Scattering(/* bool isApplyScattering, bool isApplyScatteringSparceLevel, */ int scatteringSparceLevel, GameObject parentGameObject)
+        public ObjectsScattering(/* bool isApplyScattering, bool isApplyScatteringSparceLevel, */ int scatteringSparceLevel, GameObject parentGameObject)
         {
             // this.isApplyScattering = isApplyScattering;
             // this.isApplyScatteringSparceLevel = isApplyScatteringSparceLevel;
-            this.scatteringSparceLevel = scatteringSparceLevel;
+            this.scatteringSparseLevel = scatteringSparceLevel;
             scatteringGameObject = new GameObject("Scattering");
             scatteringGameObject.transform.parent = parentGameObject.transform;
         }
 
-        public void ApplyScatteringGameObjects(GameObject[] scatteringGameObjects)
+        public void ApplyScatteringGameObjects(List<GameObject> scatteringGameObjects)
         {
             foreach (var item in scatteringGameObjects)
             {
