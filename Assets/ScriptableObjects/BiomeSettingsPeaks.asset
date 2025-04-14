@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: BiomeSettingsPeaks
   m_EditorClassIdentifier: 
   biomeNodeGraph: {fileID: 11400000, guid: a4f49677b96d5de18ab71e31ba5ac186, type: 2}
+  biomeScatteringSettings:
+  - {fileID: 11400000, guid: 88a6723c10ee106e9966b217275e2a5e, type: 2}

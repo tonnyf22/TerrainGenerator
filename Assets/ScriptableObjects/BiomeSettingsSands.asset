@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: BiomeSettingsSands
   m_EditorClassIdentifier: 
   biomeNodeGraph: {fileID: 11400000, guid: fba08a5fbd9b63a9995c560e50998ee1, type: 2}
+  biomeScatteringSettings:
+  - {fileID: 11400000, guid: 5381dcc48798508fcbc7b4c3807086fd, type: 2}
