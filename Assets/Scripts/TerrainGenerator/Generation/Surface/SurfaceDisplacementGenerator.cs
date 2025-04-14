@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TerrainGenerator.Generation.Biome;
 using TerrainGenerator.Generation.Structure;
 using UnityEngine;
@@ -6,11 +7,12 @@ namespace TerrainGenerator.Generation.Surface
 {
     public class SurfaceDisplacementGenerator
     {
-        public static SurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static SurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, float displacementInfluenceLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             return new SurfaceDisplacementGenerator(
                 chunk,
                 displacementInterblendLevel,
+                displacementInfluenceLevel,
                 biomesDistribution,
                 biomeGraphInterpreter
             );
@@ -18,13 +20,15 @@ namespace TerrainGenerator.Generation.Surface
 
         public readonly Chunk chunk;
         public readonly int displacementInterblendLevel;
+        public readonly float displacementInfluenceLevel;
         public readonly BiomesDistribution biomesDistribution;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
 
-        public SurfaceDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public SurfaceDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, float displacementInfluenceLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.displacementInterblendLevel = displacementInterblendLevel;
+            this.displacementInfluenceLevel = displacementInfluenceLevel;
             this.biomesDistribution = biomesDistribution;
             this.biomeGraphInterpreter = biomeGraphInterpreter;
         }
@@ -77,9 +81,10 @@ namespace TerrainGenerator.Generation.Surface
             else
             {
                 float[] distances = CalculateDistancesToBiomeSubsourcePointsFromVertexGlobal(vertexGlobal, biomeSubsourcePoint, biomeSubsourcePoints);
-                float[] weights = CalculateWeightsOfDistances(distances);
+                bool[] pointsFilter = CalculateSubsourcePointsFilter(distances);
+                float[] weights = CalculateWeightsOfDistances(distances, pointsFilter);
 
-                float[] heights = GetHeightsFromBiomesInVertexGlobal(vertexGlobal, biomeSubsourcePoint, biomeSubsourcePoints);
+                float[] heights = GetHeightsFromBiomesInVertexGlobal(vertexGlobal, biomeSubsourcePoint, biomeSubsourcePoints, pointsFilter);
 
                 float weightedHeight = CalculateWeightedHeight(weights, heights);
 
@@ -132,19 +137,52 @@ namespace TerrainGenerator.Generation.Surface
 
         private float CalculateDistanceBetweenPoints(float fromX, float fromZ, float toX, float toZ)
         {
-            return Mathf.Sqrt(Mathf.Pow(fromX - toX, 2) + Mathf.Pow(fromZ - toZ, 2));
+            float distance = Mathf.Sqrt(Mathf.Pow(fromX - toX, 2) + Mathf.Pow(fromZ - toZ, 2));
+
+            if (distance < 1.0f)
+            {
+                return 1.0f;
+            }
+
+            return distance;
         }
 
-        private float[] CalculateWeightsOfDistances(float[] distances)
+        private bool[] CalculateSubsourcePointsFilter(float[] distances)
         {
-            float[] weights = new float[9];
+            bool[] pointsFilter = new bool[9];
+            pointsFilter[0] = true;
+
+            float distanceLimit = biomesDistribution.biomeSubcellSize * 2.83f * displacementInfluenceLevel;
+            for (int index = 1; index < pointsFilter.Length; index++)
+            {
+                if (distances[index] > distanceLimit)
+                {
+                    pointsFilter[index] = false;
+                }
+                else
+                {
+                    pointsFilter[index] = true;
+                }
+            }
+
+            return pointsFilter;
+        }
+
+        private float[] CalculateWeightsOfDistances(float[] distances, bool[] pointsFilter)
+        {
+            List<float> weights = new List<float>();
 
             for (int index = 0; index < distances.Length; index++)
             {
-                weights[index] = Weight(distances[index]);
+                if (!pointsFilter[index])
+                {
+                    continue;
+                }
+
+                weights.Add(Weight(distances[index]));
             }
 
-            return weights;
+            return weights.ToArray();
         }
 
         private float Weight(float distance)
@@ -152,24 +190,31 @@ namespace TerrainGenerator.Generation.Surface
             return 1.0f / Mathf.Pow(distance, displacementInterblendLevel);
         }
 
-        private float[] GetHeightsFromBiomesInVertexGlobal(Vector3 vertexGlobal, BiomeSubsourcePoint biomeSubsourcePoint, BiomeSubsourcePoint[] biomeSubsourcePoints)
+        private float[] GetHeightsFromBiomesInVertexGlobal(Vector3 vertexGlobal, BiomeSubsourcePoint biomeSubsourcePoint, BiomeSubsourcePoint[] biomeSubsourcePoints, bool[] pointsFilter)
         {
-            float[] heights = new float[9];
+            List<float> heights = new List<float>();
 
-            heights[0] = biomeGraphInterpreter.GetBiomeHeight(
-                biomeSubsourcePoint.biomeIndex,
-                vertexGlobal.x,
-                vertexGlobal.z);
+            heights.Add(
+                biomeGraphInterpreter.GetBiomeHeight(
+                    biomeSubsourcePoint.biomeIndex,
+                    vertexGlobal.x,
+                    vertexGlobal.z));
 
             for (int index = 0; index < biomeSubsourcePoints.Length; index++)
             {
-                heights[index + 1] = biomeGraphInterpreter.GetBiomeHeight(
-                biomeSubsourcePoints[index].biomeIndex,
-                vertexGlobal.x,
-                vertexGlobal.z);
+                if (!pointsFilter[index + 1])
+                {
+                    continue;
+                }
+
+                heights.Add(
+                    biomeGraphInterpreter.GetBiomeHeight(
+                        biomeSubsourcePoints[index].biomeIndex,
+                        vertexGlobal.x,
+                        vertexGlobal.z));
             }
 
-            return heights;
+            return heights.ToArray();
         }
 
         private float CalculateWeightedHeight(float[] weights, float[] heights)
