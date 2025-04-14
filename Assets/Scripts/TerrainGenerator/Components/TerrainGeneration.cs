@@ -7,8 +7,9 @@ using TerrainGenerator.Generation.Structure;
 using TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph;
 using TerrainGenerator.Generation.Biome;
 using TerrainGenerator.Generation.Surface;
-using TerrainGenerator.Generation;
 using TerrainGenerator.Generation.Water;
+using TerrainGenerator.Generation.Scattering;
+using TerrainGenerator.Components.Settings.Biomes.Scattering;
 
 namespace TerrainGenerator.Components
 {
@@ -29,6 +30,7 @@ namespace TerrainGenerator.Components
         void Start()
         {
             BiomeGraph[] biomeGraphs = CreateBiomeGraphs();
+            Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings = CreateBiomesScatteringSettings();
             BiomeGraphInterpreter biomeGraphInterpreter = BiomeGraphInterpreter.CreateBiomeGraphInterpreter(biomeGraphs);
 
             BiomesDistribution biomesDistribution = BiomesDistribution.CreateBiomesDistribution(
@@ -37,9 +39,9 @@ namespace TerrainGenerator.Components
                 biomesSystemSettings.biomeGridCellSize,
                 biomesSystemSettings.biomeSubgridCellSize);
 
-            for (int coordinateX = 0; coordinateX < 16; coordinateX++)
+            for (int coordinateX = 0; coordinateX < 10; coordinateX++)
             {
-                for (int coordinateZ = 0; coordinateZ < 16; coordinateZ++)
+                for (int coordinateZ = 0; coordinateZ < 10; coordinateZ++)
                 {
                     // chunk
                     Chunk chunk = Chunk.CreateChunk(
@@ -53,9 +55,27 @@ namespace TerrainGenerator.Components
                     SurfaceDisplacementGenerator surfaceDisplacementGenerator = SurfaceDisplacementGenerator.CreateDisplacementGenerator(
                         chunk,
                         biomesSystemSettings.displacementInterblendLevel,
+                        biomesSystemSettings.displacementInfluenceLevel,
                         biomesDistribution,
                         biomeGraphInterpreter);
                     chunk.AddSurfaceDisplacementGenerator(surfaceDisplacementGenerator);
+                    // scattering points generator
+                    ScatteringPointsGenerator scatteringPointsGenerator = ScatteringPointsGenerator.CreateScatteringPointsGenerator(
+                        chunk,
+                        seed
+                    );
+                    chunk.AddScatteringPointsGenerator(scatteringPointsGenerator);
+                    // scattering objects generator
+                    ScatteringObjectsGenerator scatteringObjectsGenerator = ScatteringObjectsGenerator.CreateScatteringObjectsGenerator(
+                        chunk,
+                        seed,
+                        biomesSystemSettings.scatteringInfluenceLevel,
+                        scatteringPointsGenerator,
+                        biomesScatteringSettings,
+                        biomesDistribution,
+                        biomeGraphInterpreter
+                    );
+                    chunk.AddScatteringObjectsGenerator(scatteringObjectsGenerator);
                     // detalization level
                     DetalizationLevel detalizationLevel0 = DetalizationLevel.CreateDetalizationLevel(
                         0,
@@ -64,6 +84,12 @@ namespace TerrainGenerator.Components
                         // true,
                         chunk.chunkGameObject);
                     chunk.AddDetalizationLevel(0, detalizationLevel0);
+                    // scattering objects
+                    ObjectsScattering objectsScattering = ObjectsScattering.CreateScattering(
+                        chunksSettings.chunkLODSettings[0].scatteringSparseLevel,
+                        detalizationLevel0.detalizationLevelGameObject
+                    );
+                    detalizationLevel0.AddScattering(objectsScattering);
                     // water covering
                     WaterCovering waterCovering = WaterCovering.CreateWaterCovering(
                         chunksSettings.chunkLODSettings[0].waterCoveringMeshFillType,
@@ -98,6 +124,12 @@ namespace TerrainGenerator.Components
                             }
                         }
                     }
+                    // scatterings
+                    List<List<GameObject>> scatterings = scatteringObjectsGenerator.CreateScatterings(detalizationLevel0);
+                    for (int index = 0; index < scatterings.Count; index++)
+                    {
+                        objectsScattering.ApplyScatteringGameObjects(scatterings[index]);
+                    }
                     // water mesh
                     WaterMeshGenerator waterMeshGenerator = WaterMeshGenerator.CreateWaterMeshGenerator(chunk);
                     chunk.AddWaterMeshGenerator(waterMeshGenerator);
@@ -108,6 +140,21 @@ namespace TerrainGenerator.Components
                     waterCovering.ApplyWaterCoveringMesh(meshWaterCovering, materialWater);
                 }
             }
+
+            // Chunk chunk = Chunk.CreateChunk(
+            //     chunksSettings.chunkSize,
+            //     new ChunkCoordinates(1, 1),
+            //     gameObject);
+            // ScatteringPointsGenerator scatteringPointsGenerator = new ScatteringPointsGenerator(chunk, seed);
+            // chunk.AddScatteringPointsGenerator(scatteringPointsGenerator);
+            // ObjectsScattering objectsScattering = new ObjectsScattering(1, gameObject);
+            // List<Vector3> points = scatteringPointsGenerator.CreatePoints(objectsScattering, biomesSystemSettings.biomesSettings[0].biomeScatteringSettings[0]);
+            // for (int index = 0; index < points.Count; index++)
+            // {
+            //     GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            //     go.transform.localScale = Vector3.one * 0.3f;
+            //     go.transform.position = points[index];
+            // }
         }
 
         private BiomeGraph[] CreateBiomeGraphs()
@@ -120,6 +167,23 @@ namespace TerrainGenerator.Components
                 index++;
             }
             return biomeGraphs;
+        }
+
+        private Dictionary<int, BiomeScatteringSettings[]> CreateBiomesScatteringSettings()
+        {
+            Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings = new Dictionary<int, BiomeScatteringSettings[]>();
+
+            for (int indexBiome = 0; indexBiome < biomesSystemSettings.biomesSettings.Length; indexBiome++)
+            {
+                BiomeScatteringSettings[] scatteringSettings = new BiomeScatteringSettings[biomesSystemSettings.biomesSettings[indexBiome].biomeScatteringSettings.Length];
+                for (int indexScattering = 0; indexScattering < scatteringSettings.Length; indexScattering++)
+                {
+                    scatteringSettings[indexScattering] = biomesSystemSettings.biomesSettings[indexBiome].biomeScatteringSettings[indexScattering];
+                }
+                biomesScatteringSettings.Add(indexBiome, scatteringSettings);
+            }
+
+            return biomesScatteringSettings;
         }
 
         void Update()
