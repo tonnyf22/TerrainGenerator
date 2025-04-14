@@ -7,7 +7,9 @@ namespace TerrainGenerator.Components.Settings.Chunks
     public class ChunksSettings : ScriptableObject
     {
         public float chunkSize;
+        [Space(20)]
         public ChunkLODSettings[] chunkLODSettings;
+        [Space(20)]
         public float chunkPreloadMaxDistance;
     }
 }

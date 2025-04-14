@@ -6,14 +6,20 @@ namespace TerrainGenerator.Components.Settings.Chunks
     public class ChunkLODSettings : ScriptableObject
     {
         public float maxDistance;
+        [Space(20)]
         public MeshFillType meshFillType;
+        [Min(2)]
         public int meshResolution = 2;
         public bool isApplyCollision;
+        [Space(20)]
         public bool isApplyWaterCovering = true;
         public MeshFillType waterCoveringMeshFillType;
+        [Min(2)]
         public int waterCoveringMeshResolution = 2;
+        [Space(20)]
         public bool isApplyScattering = true;
         public bool isApplyScatteringSparcing;
-        public int scatteringSparceLevel = 1;
+        [Min(1)]
+        public int scatteringSparseLevel = 1;
     }
 }
