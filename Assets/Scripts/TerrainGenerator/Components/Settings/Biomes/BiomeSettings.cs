@@ -1,4 +1,5 @@
 using TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph;
+using TerrainGenerator.Components.Settings.Biomes.Scattering;
 using UnityEngine;
 
 namespace TerrainGenerator.Components.Settings.Biomes
@@ -7,5 +8,7 @@ namespace TerrainGenerator.Components.Settings.Biomes
     public class BiomeSettings : ScriptableObject
     {
         public BiomeGraph biomeNodeGraph;
+        [Space(20)]
+        public BiomeScatteringSettings[] biomeScatteringSettings;
     }
 }
