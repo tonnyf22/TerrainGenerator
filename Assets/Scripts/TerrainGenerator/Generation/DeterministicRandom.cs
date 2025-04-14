@@ -1,14 +1,14 @@
 using System;
 
-namespace TerrainGenerator.Generation.Biome
+namespace TerrainGenerator.Generation
 {
-    public class BiomeDeterministicRandom
+    public class DeterministicRandom
     {
         public readonly string seed;
         public readonly int seedInt;
         private readonly int[] multipliers = { 138, 217, 931 };
 
-        public BiomeDeterministicRandom(string seed)
+        public DeterministicRandom(string seed)
         {
             this.seed = seed;
             seedInt = TransformSeedStringToInt(seed);
