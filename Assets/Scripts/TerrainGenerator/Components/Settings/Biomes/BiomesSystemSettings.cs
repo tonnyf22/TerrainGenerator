@@ -8,10 +8,15 @@ namespace TerrainGenerator.Components.Settings.Biomes
     {
         public float biomeGridCellSize;
         public float biomeSubgridCellSize;
+        [Space(20)]
+        [Range(0.05f, 1.0f)]
+        public float displacementInfluenceLevel = 1.0f;
         [Min(1)]
         public int displacementInterblendLevel = 1;
-        [Min(1)]
-        public int scatteringsInterblendLevel = 1;
+        [Space(20)]
+        [Range(0.05f, 1.0f)]
+        public float scatteringInfluenceLevel = 1.0f;
+        [Space(20)]
         public BiomeSettings[] biomesSettings;
     }
 }
