@@ -2,9 +2,9 @@
 using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Logarithm")]
+	[CreateNodeMenu("Noises/Operations/Logarithm")]
 	public class LogarithmNode : Node
 	{
 		[Input] public float input;

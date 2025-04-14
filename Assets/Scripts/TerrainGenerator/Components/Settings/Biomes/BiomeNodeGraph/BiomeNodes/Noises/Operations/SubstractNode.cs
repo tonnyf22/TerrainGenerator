@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Less Than")]
-	public class LessThanNode : Node
+	[CreateNodeMenu("Noises/Operations/Substract")]
+	public class SubstractNode : Node
 	{
 		[Input] public float inputA;
 		[Input] public float inputB;
@@ -15,7 +15,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 		{
 			if (port.fieldName == "value")
 			{
-				return LessThan();
+				return Substract();
 			}
 			else
 			{
@@ -23,18 +23,12 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			}
 		}
 
-		private float LessThan()
+		private float Substract()
 		{
 			inputA = GetInputValue("inputA", inputA);
 			inputB = GetInputValue("inputB", inputB);
 
-			switch (inputA < inputB)
-			{
-				case true:
-					return 1.0f;
-				case false:
-					return 0.0f;
-			}
+			return inputA - inputB;
 		}
 	}
 }

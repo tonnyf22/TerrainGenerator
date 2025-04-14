@@ -2,9 +2,9 @@
 using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Mix")]
+	[CreateNodeMenu("Noises/Operations/Mix")]
 	public class MixNode : Node
 	{
 		[Input, Range(0, 1)] public float factor;

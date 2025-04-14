@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Multiply")]
-	public class MultiplyNode : Node
+	[CreateNodeMenu("Noises/Operations/Divide")]
+	public class DivideNode : Node
 	{
 		[Input] public float inputA;
 		[Input] public float inputB;
@@ -15,7 +15,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 		{
 			if (port.fieldName == "value")
 			{
-				return Multiply();
+				return Divide();
 			}
 			else
 			{
@@ -23,12 +23,12 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			}
 		}
 
-		private float Multiply()
+		private float Divide()
 		{
-			inputA = GetInputValue("inputA", inputB);
+			inputA = GetInputValue("inputA", inputA);
 			inputB = GetInputValue("inputB", inputB);
 
-			return inputA * inputB;
+			return inputA / inputB;
 		}
 	}
 }

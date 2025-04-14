@@ -2,10 +2,10 @@
 using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Cosine")]
-	public class CosineNode : Node
+	[CreateNodeMenu("Noises/Operations/Exponent")]
+	public class ExponentNode : Node
 	{
 		[Input] public float input;
 
@@ -15,7 +15,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 		{
 			if (port.fieldName == "value")
 			{
-				return Cosine();
+				return Exponent();
 			}
 			else
 			{
@@ -23,11 +23,11 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			}
 		}
 
-		private float Cosine()
+		private float Exponent()
 		{
 			input = GetInputValue("input", input);
 
-			return math.cos(input);
+			return math.exp(input);
 		}
 	}
 }

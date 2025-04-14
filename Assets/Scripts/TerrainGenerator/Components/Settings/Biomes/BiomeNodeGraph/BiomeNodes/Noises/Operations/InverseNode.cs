@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Inverse")]
+	[CreateNodeMenu("Noises/Operations/Inverse")]
 	public class InverseNode : Node
 	{
 		[Input] public float input;

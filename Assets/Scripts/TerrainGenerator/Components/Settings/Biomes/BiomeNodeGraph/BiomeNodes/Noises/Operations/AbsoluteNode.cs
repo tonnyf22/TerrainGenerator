@@ -2,9 +2,9 @@
 using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Absolute")]
+	[CreateNodeMenu("Noises/Operations/Absolute")]
 	public class AbsoluteNode : Node
 	{
 		[Input] public float input;

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Greater Than")]
+	[CreateNodeMenu("Noises/Operations/Greater Than")]
 	public class GreaterThanNode : Node
 	{
 		[Input] public float inputA;

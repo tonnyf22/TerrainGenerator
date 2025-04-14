@@ -2,10 +2,10 @@
 using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Arcsine")]
-	public class ArcsineNode : Node
+	[CreateNodeMenu("Noises/Operations/Arctangent")]
+	public class ArctangentNode : Node
 	{
 		[Input] public float input;
 
@@ -15,7 +15,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 		{
 			if (port.fieldName == "value")
 			{
-				return Arcsine();
+				return Arctangent();
 			}
 			else
 			{
@@ -23,11 +23,11 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			}
 		}
 
-		private float Arcsine()
+		private float Arctangent()
 		{
 			input = GetInputValue("input", input);
 
-			return math.asin(input);
+			return math.atan(input);
 		}
 	}
 }

@@ -2,10 +2,10 @@
 using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Sine")]
-	public class SineNode : Node
+	[CreateNodeMenu("Noises/Operations/Arcsine")]
+	public class ArcsineNode : Node
 	{
 		[Input] public float input;
 
@@ -15,7 +15,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 		{
 			if (port.fieldName == "value")
 			{
-				return Sine();
+				return Arcsine();
 			}
 			else
 			{
@@ -23,11 +23,11 @@ namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.
 			}
 		}
 
-		private float Sine()
+		private float Arcsine()
 		{
 			input = GetInputValue("input", input);
 
-			return math.sin(input);
+			return math.asin(input);
 		}
 	}
 }

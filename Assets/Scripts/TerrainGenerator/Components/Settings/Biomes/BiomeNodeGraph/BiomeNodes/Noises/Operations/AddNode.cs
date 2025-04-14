@@ -1,10 +1,9 @@
-﻿using Unity.Mathematics;
-using UnityEngine;
+﻿using UnityEngine;
 using XNode;
 
-namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Operations
+namespace TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph.BiomeNodes.Noises.Operations
 {
-	[CreateNodeMenu("Operations/Add")]
+	[CreateNodeMenu("Noises/Operations/Add")]
 	public class AddNode : Node
 	{
 		[Input] public float inputA;
