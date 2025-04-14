@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TerrainGenerator.Generation.Scattering;
 using TerrainGenerator.Generation.Surface;
 using TerrainGenerator.Generation.Water;
 using UnityEngine;
@@ -52,6 +53,21 @@ namespace TerrainGenerator.Generation.Structure
             );
         }
 
+        public static bool IsPointInChunk(float x, float z, ChunkCoordinates chunkCoordinates, float chunkSize)
+        {
+            float chunkBeginX = chunkSize * chunkCoordinates.x;
+            float chunkEndX = chunkSize * chunkCoordinates.z;
+            float chunkBeginZ = chunkSize * (chunkCoordinates.x + 1);
+            float chunkEndZ = chunkSize * (chunkCoordinates.z + 1);
+
+            if (x >= chunkBeginX && x <= chunkEndX && z >= chunkBeginZ && z <= chunkEndZ)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static Chunk CreateChunk(float chunkSize, ChunkCoordinates chunkCoordinates, GameObject parentGameObject)
         {
             return new Chunk(chunkSize, chunkCoordinates, parentGameObject);
@@ -64,6 +80,8 @@ namespace TerrainGenerator.Generation.Structure
         public SurfaceMeshGenerator surfaceMeshGenerator { get; private set; }
         public SurfaceDisplacementGenerator surfaceDisplacementGenerator { get; private set; }
         public WaterMeshGenerator waterMeshGenerator { get; private set; }
+        public ScatteringPointsGenerator scatteringPointsGenerator { get; private set; }
+        public ScatteringObjectsGenerator scatteringObjectsGenerator { get; private set; }
 
         public Chunk(float chunkSize, ChunkCoordinates chunkCoordinates, GameObject parentGameObject)
         {
@@ -153,6 +171,54 @@ namespace TerrainGenerator.Generation.Structure
             else
             {
                 this.waterMeshGenerator = null;
+            }
+        }
+
+        public void AddScatteringPointsGenerator(ScatteringPointsGenerator scatteringPointsGenerator)
+        {
+            if (this.scatteringPointsGenerator != null)
+            {
+                throw new ArgumentException($"Scattering points generator already exists for this chunk.");
+            }
+            else
+            {
+                this.scatteringPointsGenerator = scatteringPointsGenerator;
+            }
+        }
+
+        public void RemoveScatteringPointsGenerator()
+        {
+            if (this.scatteringPointsGenerator == null)
+            {
+                throw new ArgumentException($"Scattering points generator does not exist for this chunk.");
+            }
+            else
+            {
+                this.scatteringPointsGenerator = null;
+            }
+        }
+
+        public void AddScatteringObjectsGenerator(ScatteringObjectsGenerator scatteringObjectsGenerator)
+        {
+            if (this.scatteringObjectsGenerator != null)
+            {
+                throw new ArgumentException($"Scattering objects generator already exists for this chunk.");
+            }
+            else
+            {
+                this.scatteringObjectsGenerator = scatteringObjectsGenerator;
+            }
+        }
+
+        public void RemoveScatteringObjectsGenerator()
+        {
+            if (this.scatteringObjectsGenerator == null)
+            {
+                throw new ArgumentException($"Scattering objects generator does not exist for this chunk.");
+            }
+            else
+            {
+                this.scatteringObjectsGenerator = null;
             }
         }
 
