@@ -9,7 +9,7 @@ namespace TerrainGenerator.Generation.Structure
 {
     public class Chunk
     {
-        public static ChunkCoordinates LocatePointInChunkAsChunkCoordinates(float x, float z, float chunkSize)
+        public static ChunkCoordinates LocatePointAsChunkCoordinates(float x, float z, float chunkSize)
         {
             return new ChunkCoordinates(
                 Mathf.FloorToInt(x / chunkSize),
@@ -35,6 +35,11 @@ namespace TerrainGenerator.Generation.Structure
             );
         }
 
+        public static float LocateCenterOfChunkCoordinateAsPoint(int coordinate, float chunkSize)
+        {
+            return (coordinate + 0.5f) * chunkSize;
+        }
+
         public static Vector3 LocatePointInChunkAsPoint(float x, float z, ChunkCoordinates chunkCoordinates, float chunkSize)
         {
             return new Vector3(
@@ -56,8 +61,8 @@ namespace TerrainGenerator.Generation.Structure
         public static bool IsPointInChunk(float x, float z, ChunkCoordinates chunkCoordinates, float chunkSize)
         {
             float chunkBeginX = chunkSize * chunkCoordinates.x;
-            float chunkEndX = chunkSize * chunkCoordinates.z;
-            float chunkBeginZ = chunkSize * (chunkCoordinates.x + 1);
+            float chunkEndX = chunkSize * (chunkCoordinates.x + 1);
+            float chunkBeginZ = chunkSize * chunkCoordinates.z;
             float chunkEndZ = chunkSize * (chunkCoordinates.z + 1);
 
             if (x >= chunkBeginX && x <= chunkEndX && z >= chunkBeginZ && z <= chunkEndZ)
@@ -68,25 +73,30 @@ namespace TerrainGenerator.Generation.Structure
             return false;
         }
 
-        public static Chunk CreateChunk(float chunkSize, ChunkCoordinates chunkCoordinates, GameObject parentGameObject)
+        public static Chunk CreateChunk(float chunkSize, ChunkCoordinates chunkCoordinates, int numberOfDetalizationLevels, GameObject parentGameObject)
         {
-            return new Chunk(chunkSize, chunkCoordinates, parentGameObject);
+            return new Chunk(
+                chunkSize,
+                chunkCoordinates,
+                numberOfDetalizationLevels,
+                parentGameObject);
         }
 
         public readonly float chunkSize;
         public readonly ChunkCoordinates chunkCoordinates;
+        public readonly int numberOfDetalizationLevels;
         public readonly GameObject chunkGameObject;
         public readonly Dictionary<int, DetalizationLevel> detalizationLevels;
         public SurfaceMeshGenerator surfaceMeshGenerator { get; private set; }
         public SurfaceDisplacementGenerator surfaceDisplacementGenerator { get; private set; }
         public WaterMeshGenerator waterMeshGenerator { get; private set; }
-        public ScatteringPointsGenerator scatteringPointsGenerator { get; private set; }
         public ScatteringObjectsGenerator scatteringObjectsGenerator { get; private set; }
 
-        public Chunk(float chunkSize, ChunkCoordinates chunkCoordinates, GameObject parentGameObject)
+        public Chunk(float chunkSize, ChunkCoordinates chunkCoordinates, int numberOfDetalizationLevels, GameObject parentGameObject)
         {
             this.chunkSize = chunkSize;
             this.chunkCoordinates = chunkCoordinates;
+            this.numberOfDetalizationLevels = numberOfDetalizationLevels;
             chunkGameObject = new GameObject("TerrainChunk");
             chunkGameObject.transform.parent = parentGameObject.transform;
             SetChunkGameObjectCoordinates();
@@ -174,30 +184,6 @@ namespace TerrainGenerator.Generation.Structure
             }
         }
 
-        public void AddScatteringPointsGenerator(ScatteringPointsGenerator scatteringPointsGenerator)
-        {
-            if (this.scatteringPointsGenerator != null)
-            {
-                throw new ArgumentException($"Scattering points generator already exists for this chunk.");
-            }
-            else
-            {
-                this.scatteringPointsGenerator = scatteringPointsGenerator;
-            }
-        }
-
-        public void RemoveScatteringPointsGenerator()
-        {
-            if (this.scatteringPointsGenerator == null)
-            {
-                throw new ArgumentException($"Scattering points generator does not exist for this chunk.");
-            }
-            else
-            {
-                this.scatteringPointsGenerator = null;
-            }
-        }
-
         public void AddScatteringObjectsGenerator(ScatteringObjectsGenerator scatteringObjectsGenerator)
         {
             if (this.scatteringObjectsGenerator != null)
@@ -246,6 +232,11 @@ namespace TerrainGenerator.Generation.Structure
             }
         }
 
+        public bool IsDetalizationLevelExists(int levelIndex)
+        {
+            return detalizationLevels.ContainsKey(levelIndex);
+        }
+
         public void RemoveDetalizationLevel(int levelIndex)
         {
             if (!detalizationLevels.ContainsKey(levelIndex))
@@ -266,7 +257,21 @@ namespace TerrainGenerator.Generation.Structure
             }
             else
             {
-                detalizationLevels[levelIndex].Show();
+                for (int index = 0; index < numberOfDetalizationLevels; index++)
+                {
+                    if (!detalizationLevels.ContainsKey(index))
+                    {
+                        continue;
+                    }
+                    else if (index == levelIndex)
+                    {
+                        detalizationLevels[index].Show();
+                    }
+                    else
+                    {
+                        detalizationLevels[index].Hide();
+                    }
+                }
             }
         }
 
