@@ -6,13 +6,12 @@ namespace TerrainGenerator.Generation.Structure
 {
     public class DetalizationLevel
     {
-        public static DetalizationLevel CreateDetalizationLevel(int levelIndex, MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
+        public static DetalizationLevel CreateDetalizationLevel(int levelIndex, MeshFillType meshFillType, int meshResolution, GameObject parentGameObject)
         {
             return new DetalizationLevel(
                 levelIndex,
                 meshFillType,
                 meshResolution,
-                // isApplyCollision,
                 parentGameObject
             );
         }
@@ -20,17 +19,15 @@ namespace TerrainGenerator.Generation.Structure
         public readonly int levelIndex;
         public readonly MeshFillType meshFillType;
         public readonly int meshResolution;
-        // public readonly bool isApplyCollision;
         public readonly GameObject detalizationLevelGameObject;
         public WaterCovering waterCovering { get; private set; }
         public ObjectsScattering scattering { get; private set; }
 
-        public DetalizationLevel(int levelIndex, MeshFillType meshFillType, int meshResolution, /* bool isApplyCollision, */ GameObject parentGameObject)
+        public DetalizationLevel(int levelIndex, MeshFillType meshFillType, int meshResolution, GameObject parentGameObject)
         {
             this.levelIndex = levelIndex;
             this.meshFillType = meshFillType;
             this.meshResolution = meshResolution;
-            // this.isApplyCollision = isApplyCollision;
             detalizationLevelGameObject = new GameObject("ChunkDetalizationLevel");
             detalizationLevelGameObject.transform.parent = parentGameObject.transform;
             SetDetalizationLevelGameObjectCoordinates();
@@ -43,12 +40,18 @@ namespace TerrainGenerator.Generation.Structure
 
         public void Show()
         {
-            detalizationLevelGameObject.SetActive(true);
+            if (!detalizationLevelGameObject.activeSelf)
+            {
+                detalizationLevelGameObject.SetActive(true);
+            }
         }
 
         public void Hide()
         {
-            detalizationLevelGameObject.SetActive(false);
+            if (detalizationLevelGameObject.activeSelf)
+            {
+                detalizationLevelGameObject.SetActive(false);
+            }
         }
 
         public void AddWaterCovering(WaterCovering waterCovering)
