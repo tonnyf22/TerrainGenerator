@@ -5,24 +5,21 @@ namespace TerrainGenerator.Generation.Structure
 {
     public class WaterCovering
     {
-        public static WaterCovering CreateWaterCovering(/* bool isApplyWaterCovering, */ MeshFillType waterCoveringMeshFillType, int waterCoveringMeshResolution, GameObject parentGameObject)
+        public static WaterCovering CreateWaterCovering(MeshFillType waterCoveringMeshFillType, int waterCoveringMeshResolution, GameObject parentGameObject)
         {
             return new WaterCovering(
-                // isApplyWaterCovering,
                 waterCoveringMeshFillType,
                 waterCoveringMeshResolution,
                 parentGameObject
             );
         }
 
-        // public readonly bool isApplyWaterCovering;
         public readonly MeshFillType waterCoveringMeshFillType;
         public readonly int waterCoveringMeshResolution;
         public readonly GameObject waterCoveringGameObject;
 
-        public WaterCovering(/* bool isApplyWaterCovering, */ MeshFillType waterCoveringMeshFillType, int waterCoveringMeshResolution, GameObject parentGameObject)
+        public WaterCovering(MeshFillType waterCoveringMeshFillType, int waterCoveringMeshResolution, GameObject parentGameObject)
         {
-            // this.isApplyWaterCovering = isApplyWaterCovering;
             this.waterCoveringMeshFillType = waterCoveringMeshFillType;
             this.waterCoveringMeshResolution = waterCoveringMeshResolution;
             waterCoveringGameObject = new GameObject("WaterCovering");
