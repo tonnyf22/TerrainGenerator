@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using TerrainGenerator.Components.Settings.Biomes.Scattering;
 using TerrainGenerator.Generation.Structure;
+using TerrainGenerator.Components.Settings.Biomes.Scattering;
 using UnityEngine;
 
 namespace TerrainGenerator.Generation.Scattering
@@ -32,10 +32,12 @@ namespace TerrainGenerator.Generation.Scattering
             {
                 case ScatteringType.Random:
                     return GeneratePointsRandom(
+                        objectsScattering.isApplyScatteringSparseLevel,
                         objectsScattering.scatteringSparseLevel,
                         biomeScatteringSettings as BiomeRandomScatteringSettings);
                 case ScatteringType.GridBased:
                     return GeneratePointsGridBased(
+                        objectsScattering.isApplyScatteringSparseLevel,
                         objectsScattering.scatteringSparseLevel,
                         biomeScatteringSettings as BiomeGridBasedScatteringSettings);
                 default:
@@ -46,10 +48,24 @@ namespace TerrainGenerator.Generation.Scattering
             }
         }
 
-        private List<Vector3> GeneratePointsRandom(int scatteringSparseLevel, BiomeRandomScatteringSettings biomeRandomScatteringSettings)
+        private List<Vector3> GeneratePointsRandom(bool isApplyScatteringSparsing, int scatteringSparseLevel, BiomeRandomScatteringSettings biomeRandomScatteringSettings)
         {
             List<Vector3> points = new List<Vector3>();
 
+            if (isApplyScatteringSparsing)
+            {
+                GeneratePointsRandomSparse(points, scatteringSparseLevel, biomeRandomScatteringSettings);
+            }
+            else
+            {
+                GeneratePointsRandomRegular(points, biomeRandomScatteringSettings);
+            }
+
+            return points;
+        }
+
+        private void GeneratePointsRandomSparse(List<Vector3> points, int scatteringSparseLevel, BiomeRandomScatteringSettings biomeRandomScatteringSettings)
+        {
             int pointsNumber = biomeRandomScatteringSettings.targetResolution * biomeRandomScatteringSettings.targetResolution;
             int missedPoints = scatteringSparseLevel / 2;
 
@@ -66,14 +82,36 @@ namespace TerrainGenerator.Generation.Scattering
                     CreateAndStorePointRandom(points, index);
                 }
             }
+        }
+
+        private void GeneratePointsRandomRegular(List<Vector3> points, BiomeRandomScatteringSettings biomeRandomScatteringSettings)
+        {
+            int pointsNumber = biomeRandomScatteringSettings.targetResolution * biomeRandomScatteringSettings.targetResolution;
+
+            for (int index = 0; index < pointsNumber; index++)
+            {
+                CreateAndStorePointRandom(points, index);
+            }
+        }
+
+        private List<Vector3> GeneratePointsGridBased(bool isApplyScatteringSparsing, int scatteringSparseLevel, BiomeGridBasedScatteringSettings biomeGridBasedScatteringSettings)
+        {
+            List<Vector3> points = new List<Vector3>();
+
+            if (isApplyScatteringSparsing)
+            {
+                GeneratePointsGridBasedSparse(points, scatteringSparseLevel, biomeGridBasedScatteringSettings);
+            }
+            else
+            {
+                GeneratePointsGridBasedRegular(points, biomeGridBasedScatteringSettings);
+            }
 
             return points;
         }
 
-        private List<Vector3> GeneratePointsGridBased(int scatteringSparseLevel, BiomeGridBasedScatteringSettings biomeGridBasedScatteringSettings)
+        private void GeneratePointsGridBasedSparse(List<Vector3> points, int scatteringSparseLevel, BiomeGridBasedScatteringSettings biomeGridBasedScatteringSettings)
         {
-            List<Vector3> points = new List<Vector3>();
-
             int missedPoints = scatteringSparseLevel / 2;
 
             for (int xIndex = 0; xIndex < biomeGridBasedScatteringSettings.targetResolution; xIndex++)
@@ -88,19 +126,36 @@ namespace TerrainGenerator.Generation.Scattering
                     {
                         missedPoints = 0;
 
-                        CreateAndStorePointGridBased(
-                            points,
-                            xIndex,
-                            zIndex,
-                            biomeGridBasedScatteringSettings.targetResolution,
-                            biomeGridBasedScatteringSettings.randomStep,
-                            biomeGridBasedScatteringSettings.isApplyStepRange,
-                            biomeGridBasedScatteringSettings.randomStepMin);
                     }
+
+                    CreateAndStorePointGridBased(
+                        points,
+                        xIndex,
+                        zIndex,
+                        biomeGridBasedScatteringSettings.targetResolution,
+                        biomeGridBasedScatteringSettings.randomStep,
+                        biomeGridBasedScatteringSettings.isApplyStepRange,
+                        biomeGridBasedScatteringSettings.randomStepMin);
                 }
             }
+        }
 
-            return points;
+        private void GeneratePointsGridBasedRegular(List<Vector3> points, BiomeGridBasedScatteringSettings biomeGridBasedScatteringSettings)
+        {
+            for (int xIndex = 0; xIndex < biomeGridBasedScatteringSettings.targetResolution; xIndex++)
+            {
+                for (int zIndex = 0; zIndex < biomeGridBasedScatteringSettings.targetResolution; zIndex++)
+                {
+                    CreateAndStorePointGridBased(
+                        points,
+                        xIndex,
+                        zIndex,
+                        biomeGridBasedScatteringSettings.targetResolution,
+                        biomeGridBasedScatteringSettings.randomStep,
+                        biomeGridBasedScatteringSettings.isApplyStepRange,
+                        biomeGridBasedScatteringSettings.randomStepMin);
+                }
+            }
         }
 
         private void CreateAndStorePointRandom(List<Vector3> points, int index)
@@ -113,7 +168,10 @@ namespace TerrainGenerator.Generation.Scattering
 
             Vector3 point = Chunk.LocatePointInChunkAsPoint(x, z, chunk.chunkCoordinates, chunk.chunkSize);
 
-            points.Add(point);
+            if (Chunk.IsPointInChunk(point.x, point.z, chunk.chunkCoordinates, chunk.chunkSize))
+            {
+                points.Add(point);
+            }
         }
 
         private void CreateAndStorePointGridBased(List<Vector3> points, int xIndex, int zIndex, int targetResolution, float randomStep, bool isApplyStepRange, float randomStepMin)
@@ -148,13 +206,11 @@ namespace TerrainGenerator.Generation.Scattering
 
             float x = xIndex * verticesGapSize + offsetStepX;
             float z = zIndex * verticesGapSize + offsetStepZ;
-            
-            if (Chunk.IsPointInChunk(x, z, chunk.chunkCoordinates, chunk.chunkSize))
+
+            Vector3 point = Chunk.LocatePointInChunkAsPoint(x, z, chunk.chunkCoordinates, chunk.chunkSize);
+
+            if (Chunk.IsPointInChunk(point.x, point.z, chunk.chunkCoordinates, chunk.chunkSize))
             {
-                // Vector3 point = new Vector3(x, 0.0f, z);
-
-                Vector3 point = Chunk.LocatePointInChunkAsPoint(x, z, chunk.chunkCoordinates, chunk.chunkSize);
-
                 points.Add(point);
             }
         }
