@@ -8,13 +8,12 @@ namespace TerrainGenerator.Generation.Scattering
 {
     public class ScatteringObjectsGenerator
     {
-        public static ScatteringObjectsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, ScatteringPointsGenerator scatteringPointsGenerator, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static ScatteringObjectsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             return new ScatteringObjectsGenerator(
                 chunk,
                 seed,
                 scatteringInfluenceLevel,
-                scatteringPointsGenerator,
                 biomesScatteringSettings,
                 biomesDistribution,
                 biomeGraphInterpreter);
@@ -23,10 +22,11 @@ namespace TerrainGenerator.Generation.Scattering
         public readonly Chunk chunk;
         public readonly string seed;
         public readonly float scatteringInfluenceLevel;
-        public readonly ScatteringPointsGenerator scatteringPointsGenerator;
         public readonly Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings;
         public readonly BiomesDistribution biomesDistribution;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
+
+        private readonly ScatteringPointsGenerator scatteringPointsGenerator;
         
         private DeterministicRandom deterministicRandom;
 
@@ -37,15 +37,18 @@ namespace TerrainGenerator.Generation.Scattering
         private DetalizationLevel detalizationLevel;
         private List<GameObject> scattering;
 
-        public ScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, ScatteringPointsGenerator scatteringPointsGenerator, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public ScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.seed = seed;
             this.scatteringInfluenceLevel = scatteringInfluenceLevel;
-            this.scatteringPointsGenerator = scatteringPointsGenerator;
             this.biomesScatteringSettings = biomesScatteringSettings;
             this.biomesDistribution = biomesDistribution;
             this.biomeGraphInterpreter = biomeGraphInterpreter;
+            scatteringPointsGenerator = ScatteringPointsGenerator.CreateScatteringPointsGenerator(
+                chunk,
+                seed
+            );
             deterministicRandom = new DeterministicRandom(seed);
             distanceLimit = CalculateDistanceLimit();
         }
