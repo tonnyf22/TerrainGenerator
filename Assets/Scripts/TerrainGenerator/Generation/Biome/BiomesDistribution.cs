@@ -101,12 +101,6 @@ namespace TerrainGenerator.Generation.Biome
 
                 biomeCellsToSources.Add(biomeCellCoordinate, biomeSourcePoint);
 
-                // Source point
-                GameObject sourcePointGameObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-                sourcePointGameObject.name = "SourcePoint";
-                sourcePointGameObject.transform.position = new Vector3(sourceX, 0.0f, sourceZ);
-                sourcePointGameObject.transform.localScale = Vector3.one * 0.1f;
-
                 return biomeSourcePoint;
             }
         }
@@ -161,12 +155,6 @@ namespace TerrainGenerator.Generation.Biome
                     biomeIndexToSubsources.Add(biomeIndex, new List<BiomeSubsourcePoint>());
                 }
                 biomeIndexToSubsources[biomeIndex].Add(biomeSubsourcePoint);
-
-                // Subsource point
-                GameObject subsourcePointGameObject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-                subsourcePointGameObject.name = "SubsourcePoint";
-                subsourcePointGameObject.transform.position = new Vector3(subsourceX, 0.0f, subsourceZ);
-                subsourcePointGameObject.transform.localScale = Vector3.one * 0.05f;
 
                 return biomeSubsourcePoint;
             }
