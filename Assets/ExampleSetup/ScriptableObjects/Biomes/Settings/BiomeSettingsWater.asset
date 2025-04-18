@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba852417819452d04ab8653ce0175d1b, type: 3}
-  m_Name: BiomeSettingsLands
+  m_Name: BiomeSettingsWater
   m_EditorClassIdentifier: 
   biomeNodeGraph: {fileID: 11400000, guid: 9a51b22dec8b1cec8b076574e300d6fc, type: 2}
   biomeScatteringSettings: []

@@ -9,18 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98d138c997b3d1649bb1aecb5f26d1c8, type: 3}
-  m_Name: BiomeGridBasedScatteringSettings
+  m_Script: {fileID: 11500000, guid: f7cf2d3c20f9568f98971654a2371229, type: 3}
+  m_Name: BiomeRandomScatteringSettings1_Peaks
   m_EditorClassIdentifier: 
-  scatteringType: 1
-  targetResolution: 17
+  scatteringType: 0
+  targetResolution: 5
   scatteringObject: {fileID: 4787056687105379865, guid: 460c3a8a453c6821194fd17c7aad7cee, type: 3}
   scatteringScale: 2
   isApplyScaleRange: 1
-  scatteringScaleMin: 0
-  scatteringRotation: 40
+  scatteringScaleMin: 1
+  scatteringRotation: 30
   isApplyRotationRange: 1
   scatteringRotationMin: 0
-  randomStep: 0.5
-  isApplyStepRange: 1
-  randomStepMin: 0
+  scatteringMinHeight: 0.5
+  scatteringMaxHeight: 1000

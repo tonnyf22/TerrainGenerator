@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2e9a366cadb21fcaab93f9a73112488, type: 3}
-  m_Name: ChunkLODSettings
+  m_Name: ChunkLOD2Settings
   m_EditorClassIdentifier: 
-  maxDistance: 4
-  meshFillType: 0
-  meshResolution: 33
-  isApplyCollision: 1
-  isApplyWaterCovering: 1
-  waterCoveringMeshFillType: 0
-  waterCoveringMeshResolution: 17
-  isApplyScattering: 1
-  isApplyScatteringSparcing: 0
-  scatteringSparseLevel: 5
+  maxDistance: 60
+  meshFillType: 2
+  meshResolution: 9
+  isApplyCollision: 0
+  isApplyWaterCovering: 0
+  waterCoveringMeshFillType: 2
+  waterCoveringMeshResolution: 5
+  isApplyScattering: 0
+  isApplyScatteringSparsing: 0
+  scatteringSparseLevel: 9

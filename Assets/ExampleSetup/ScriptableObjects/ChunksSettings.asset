@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadc0f07135b4cf3697a60414d56397b, type: 3}
   m_Name: ChunksSettings
   m_EditorClassIdentifier: 
-  chunkSize: 13.333333
+  chunkSize: 5.31
   chunkLODSettings:
   - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
-  - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
-  - {fileID: 11400000, guid: 179e958124f12dcb4ab9c16b1a0191ac, type: 2}
-  chunkPreloadMaxDistance: 15
+  - {fileID: 11400000, guid: c360bed9abea93da181a81ed132947b5, type: 2}
+  - {fileID: 11400000, guid: cd268c4a91efc071dad17e885996448c, type: 2}
+  chunkPreloadMaxDistance: 70
