@@ -18,8 +18,8 @@ namespace TerrainGenerator.Components.Settings.Chunks
         public int waterCoveringMeshResolution = 2;
         [Space(20)]
         public bool isApplyScattering = true;
-        public bool isApplyScatteringSparcing;
-        [Min(1)]
-        public int scatteringSparseLevel = 1;
+        public bool isApplyScatteringSparsing;
+        [Min(0)]
+        public int scatteringSparseLevel = 0;
     }
 }
