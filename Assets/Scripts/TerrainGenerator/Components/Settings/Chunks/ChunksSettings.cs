@@ -8,6 +8,7 @@ namespace TerrainGenerator.Components.Settings.Chunks
     {
         public float chunkSize;
         [Space(20)]
+        [Expandable]
         public ChunkLODSettings[] chunkLODSettings;
         [Space(20)]
         public float chunkPreloadMaxDistance;

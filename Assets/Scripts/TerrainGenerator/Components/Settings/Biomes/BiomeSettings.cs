@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using TerrainGenerator.Components.Settings.Biomes.BiomeNodeGraph;
 using TerrainGenerator.Components.Settings.Biomes.Scattering;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace TerrainGenerator.Components.Settings.Biomes
     {
         public BiomeGraph biomeNodeGraph;
         [Space(20)]
+        [Expandable]
         public BiomeScatteringSettings[] biomeScatteringSettings;
     }
 }

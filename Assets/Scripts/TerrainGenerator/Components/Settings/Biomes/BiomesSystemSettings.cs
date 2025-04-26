@@ -17,6 +17,7 @@ namespace TerrainGenerator.Components.Settings.Biomes
         [Range(0.05f, 1.0f)]
         public float scatteringInfluenceLevel = 1.0f;
         [Space(20)]
+        [Expandable]
         public BiomeSettings[] biomesSettings;
     }
 }

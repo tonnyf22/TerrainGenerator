@@ -3,6 +3,7 @@ using TerrainGenerator.Components.Settings.Biomes;
 using TerrainGenerator.Generation.Management;
 using NaughtyAttributes;
 using UnityEngine;
+using System.Collections;
 
 namespace TerrainGenerator.Components
 {
@@ -13,7 +14,9 @@ namespace TerrainGenerator.Components
         public float scanTimeInterval;
         public string seed;
         public Transform generationCenter;
+        [Expandable]
         public ChunksSettings chunksSettings;
+        [Expandable]
         public BiomesSystemSettings biomesSystemSettings;
 
         // debug
@@ -44,6 +47,16 @@ namespace TerrainGenerator.Components
         void Start()
         {
             InvokeRepeating("ScanForChunksUpdates", 0.0f, scanTimeInterval);
+            // StartCoroutine(ScanForChunksUpdates());
         }
+
+        // private IEnumerator ScanForChunksUpdates()
+        // {
+        //     while (true)
+        //     {
+        //         chunksGenerator.ScanForChunksUpdate();
+        //         yield return new WaitForSeconds(scanTimeInterval);
+        //     }
+        // }
     }
 }
