@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace TerrainGenerator.Generation.Scattering
 {
-    public class ScatteringPointsGenerator
+    public class ScatteringRawPointsGenerator
     {
-        public static ScatteringPointsGenerator CreateScatteringPointsGenerator(Chunk chunk, string seed)
+        public static ScatteringRawPointsGenerator CreateScatteringPointsGenerator(Chunk chunk, string seed)
         {
-            return new ScatteringPointsGenerator(
+            return new ScatteringRawPointsGenerator(
                 chunk,
                 seed);
         }
@@ -19,7 +19,7 @@ namespace TerrainGenerator.Generation.Scattering
         public readonly string seed;
         private DeterministicRandom deterministicRandom;
 
-        public ScatteringPointsGenerator(Chunk chunk, string seed)
+        public ScatteringRawPointsGenerator(Chunk chunk, string seed)
         {
             this.chunk = chunk;
             this.seed = seed;
