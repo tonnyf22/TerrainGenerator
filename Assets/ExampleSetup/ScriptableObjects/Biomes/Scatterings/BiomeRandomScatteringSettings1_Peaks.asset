@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BiomeRandomScatteringSettings1_Peaks
   m_EditorClassIdentifier: 
   scatteringType: 0
+  numberOfPreinstantiatedObjects: 400
   targetResolution: 5
   scatteringObject: {fileID: 4787056687105379865, guid: 460c3a8a453c6821194fd17c7aad7cee, type: 3}
   scatteringScale: 2

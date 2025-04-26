@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanTimeInterval: 0.1
-  seed: SQF4S24213543AFE4240888
+  seed: SQF4S24213543AFE424088
   generationCenter: {fileID: 879789459}
   chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
   biomesSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}

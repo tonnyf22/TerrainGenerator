@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e9a366cadb21fcaab93f9a73112488, type: 3}
   m_Name: ChunkLOD2Settings
   m_EditorClassIdentifier: 
-  maxDistance: 60
+  maxDistance: 65
   meshFillType: 2
   meshResolution: 9
-  isApplyCollision: 0
-  isApplyWaterCovering: 0
+  isApplyCollision: 1
+  isApplyWaterCovering: 1
   waterCoveringMeshFillType: 2
   waterCoveringMeshResolution: 5
-  isApplyScattering: 0
-  isApplyScatteringSparsing: 0
+  isApplyScattering: 1
+  isApplyScatteringSparsing: 1
   scatteringSparseLevel: 9

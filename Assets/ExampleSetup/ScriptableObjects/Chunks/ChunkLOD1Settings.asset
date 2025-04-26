@@ -20,5 +20,5 @@ MonoBehaviour:
   waterCoveringMeshFillType: 1
   waterCoveringMeshResolution: 9
   isApplyScattering: 1
-  isApplyScatteringSparcing: 0
+  isApplyScatteringSparsing: 1
   scatteringSparseLevel: 5

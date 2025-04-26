@@ -19,5 +19,5 @@ MonoBehaviour:
   scatteringInfluenceLevel: 0.8
   biomesSettings:
   - {fileID: 11400000, guid: 62059d9af62d211b98e66e00ff81af03, type: 2}
-  - {fileID: 11400000, guid: 0706dd188909640cb986b2ed368682c7, type: 2}
   - {fileID: 11400000, guid: 0de74ccd42ae5baf683cbd46cda335f5, type: 2}
+  - {fileID: 11400000, guid: 0706dd188909640cb986b2ed368682c7, type: 2}
