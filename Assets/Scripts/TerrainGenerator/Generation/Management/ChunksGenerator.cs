@@ -31,12 +31,17 @@ namespace TerrainGenerator.Generation.Management
         public readonly GameObject generationParentGameObject;
 
         public readonly GeneratorSettingsInterpreter generatorSettingsInterpreter;
+        public readonly ScatteringObjectsPool scatteringObjectsPool;
 
         // debug
         public Material materialSurface;
         public Material materialWater;
 
+        private int indexLastLOD;
+
         private Dictionary<ChunkCoordinates, Chunk> chunks = new Dictionary<ChunkCoordinates, Chunk>();
+        private Dictionary<ChunkCoordinates, Chunk> chunksCurrentUpdate = new Dictionary<ChunkCoordinates, Chunk>();
+        private Dictionary<ChunkCoordinates, Chunk> chunksPreviousUpdate = new Dictionary<ChunkCoordinates, Chunk>();
 
         public ChunksGenerator(string seed, Transform generationCenter, ChunksSettings chunksSettings, BiomesSystemSettings biomesSystemSettings, GameObject generationParentGameObject)
         {
@@ -50,6 +55,33 @@ namespace TerrainGenerator.Generation.Management
                 chunksSettings,
                 biomesSystemSettings
             );
+            scatteringObjectsPool = ScatteringObjectsPool.CreateScatteringObjectsPool(
+                biomesSystemSettings.biomesSettings,
+                generationParentGameObject
+            );
+            CalculateIndexOfLastLOD();
+            AllocateChunksUpdateDictionaries();
+        }
+
+        private void CalculateIndexOfLastLOD()
+        {
+            indexLastLOD = chunksSettings.chunkLODSettings.Length - 1;
+        }
+
+        private void AllocateChunksUpdateDictionaries()
+        {
+            int size = CalculateChunksUpdateDictionarySize();
+            chunksCurrentUpdate = new Dictionary<ChunkCoordinates, Chunk>(size);
+            chunksPreviousUpdate = new Dictionary<ChunkCoordinates, Chunk>(size);
+        }
+
+        private int CalculateChunksUpdateDictionarySize()
+        {
+            int halfDimention = Mathf.CeilToInt(
+                generatorSettingsInterpreter.GetChunkLODSettings(indexLastLOD).maxDistance /
+                chunksSettings.chunkSize);
+
+            return 4 * halfDimention * halfDimention;
         }
 
         public void ScanForChunksUpdate()
@@ -61,6 +93,9 @@ namespace TerrainGenerator.Generation.Management
                     CreateChunkDetalizationLevelBasedOnLODRange(offsetX, offsetZ);
                 }
             }
+
+            HideChunksOutOfRange();
+            PrepareChunksUpdateDictionariesForNextUpdate();
         }
 
         private void CreateChunkDetalizationLevelBasedOnLODRange(float offsetX, float offsetZ)
@@ -83,8 +118,10 @@ namespace TerrainGenerator.Generation.Management
                     {
                         Chunk chunk = GetChunkInChunkCoordinates(chunkCoordinates);
 
-                        GetAndShowChunkDetalizationLevel(chunk, indexLOD);
+                        StoreChunkOfCurrentUpdate(chunkCoordinates, chunk);
+                        CompareToChunksOfPreviousUpdate(chunkCoordinates);
 
+                        ShowOrCreateChunkDetalizationLevel(chunk, indexLOD);
                         isNoLODToShow = false;
                     }
                     else
@@ -104,13 +141,17 @@ namespace TerrainGenerator.Generation.Management
             {
                 case 2:
                     coeffX *= -1;
+                    offsetX += chunksSettings.chunkSize;
                     break;
                 case 3:
                     coeffX *= -1;
                     coeffZ *= -1;
+                    offsetX += chunksSettings.chunkSize;
+                    offsetZ += chunksSettings.chunkSize;
                     break;
                 case 4:
                     coeffZ *= -1;
+                    offsetZ += chunksSettings.chunkSize;
                     break;
             }
 
@@ -125,7 +166,10 @@ namespace TerrainGenerator.Generation.Management
         {
             if (chunks.ContainsKey(chunkCoordinates))
             {
-                return chunks[chunkCoordinates];
+                Chunk chunk = chunks[chunkCoordinates];
+                chunk.Show();
+
+                return chunk;
             }
             else
             {
@@ -163,7 +207,7 @@ namespace TerrainGenerator.Generation.Management
             );
             chunk.AddWaterMeshGenerator(waterMeshGenerator);
 
-            ScatteringObjectsGenerator scatteringObjectsGenerator = ScatteringObjectsGenerator.CreateScatteringObjectsGenerator(
+            ScatteringModifiedPointsGenerator scatteringObjectsGenerator = ScatteringModifiedPointsGenerator.CreateScatteringObjectsGenerator(
                 chunk,
                 seed,
                 biomesSystemSettings.scatteringInfluenceLevel,
@@ -187,10 +231,28 @@ namespace TerrainGenerator.Generation.Management
             return distanceSqared <= rangeLODSqared;
         }
 
-        private void GetAndShowChunkDetalizationLevel(Chunk chunk, int indexLOD)
+        private void StoreChunkOfCurrentUpdate(ChunkCoordinates chunkCoordinates, Chunk chunk)
+        {
+            if (!chunksCurrentUpdate.ContainsKey(chunkCoordinates))
+            {
+                chunksCurrentUpdate.Add(chunkCoordinates, chunk);
+            }
+        }
+
+        private void CompareToChunksOfPreviousUpdate(ChunkCoordinates chunkCoordinates)
+        {
+            if (chunksPreviousUpdate.ContainsKey(chunkCoordinates)){
+                chunksPreviousUpdate.Remove(chunkCoordinates);
+            }
+        }
+
+        private void ShowOrCreateChunkDetalizationLevel(Chunk chunk, int indexLOD)
         {
             if (chunk.IsDetalizationLevelExists(indexLOD))
             {
+                // hide extra
+                chunk.HideDetalizationLevelsExcept(indexLOD);
+                // show up
                 chunk.ShowDetalizationLevel(indexLOD);
                 return;
             }
@@ -209,6 +271,7 @@ namespace TerrainGenerator.Generation.Management
                 generatorSettingsInterpreter.GetChunkLODSettings(indexLOD).scatteringSparseLevel,
                 detalizationLevel.detalizationLevelGameObject
             );
+            objectsScattering.ApplyScatteringObjectsPool(scatteringObjectsPool);
             detalizationLevel.AddScattering(objectsScattering);
 
             WaterCovering waterCovering = WaterCovering.CreateWaterCovering(
@@ -228,14 +291,12 @@ namespace TerrainGenerator.Generation.Management
             }
             MeshNormalsGenerator.RecalculateMeshNormals(surfaceMesh);
 
-
             if (generatorSettingsInterpreter.GetChunkLODSettings(indexLOD).isApplyScattering)
             {
-                List<List<GameObject>> scatterings = chunk.scatteringObjectsGenerator.CreateScatterings(detalizationLevel);
-                for (int index = 0; index < scatterings.Count; index++)
-                {
-                    objectsScattering.ApplyScatteringGameObjects(scatterings[index]);
-                }
+                Dictionary<BiomeScattering, List<ScatteringObjectParameters>> biomeScatteringObjectsParameters = 
+                    chunk.scatteringObjectsGenerator.CreateBiomeScatteringObjectsParameters(detalizationLevel);
+                objectsScattering.SaveBiomeScatteringObjectsParameters(biomeScatteringObjectsParameters);
+                objectsScattering.SetupScattering();
             }
 
             if (generatorSettingsInterpreter.GetChunkLODSettings(indexLOD).isApplyWaterCovering)
@@ -249,8 +310,8 @@ namespace TerrainGenerator.Generation.Management
 
             RecalculateChunkDetalizationLevelNormals(chunk, indexLOD);
 
-            // show up
-            chunk.ShowDetalizationLevel(indexLOD);
+            // hide extra
+            chunk.HideDetalizationLevelsExcept(indexLOD);
         }
 
         private void RecalculateChunkDetalizationLevelNormals(Chunk chunk, int indexLOD)
@@ -278,6 +339,24 @@ namespace TerrainGenerator.Generation.Management
                     }
                 }
             }
+        }
+
+        private void HideChunksOutOfRange()
+        {
+            foreach (var pair in chunksPreviousUpdate)
+            {
+                pair.Value.Hide();
+            }
+        }
+
+        private void PrepareChunksUpdateDictionariesForNextUpdate()
+        {
+            chunksPreviousUpdate.Clear();
+            foreach (var pair in chunksCurrentUpdate)
+            {
+                chunksPreviousUpdate.Add(pair.Key, pair.Value);
+            }
+            chunksCurrentUpdate.Clear();
         }
     }
 }
