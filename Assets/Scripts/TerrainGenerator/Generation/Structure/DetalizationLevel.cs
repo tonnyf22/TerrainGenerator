@@ -42,6 +42,8 @@ namespace TerrainGenerator.Generation.Structure
         {
             if (!detalizationLevelGameObject.activeSelf)
             {
+                scattering.SetupScattering();
+
                 detalizationLevelGameObject.SetActive(true);
             }
         }
@@ -51,6 +53,8 @@ namespace TerrainGenerator.Generation.Structure
             if (detalizationLevelGameObject.activeSelf)
             {
                 detalizationLevelGameObject.SetActive(false);
+
+                scattering.ReleaseScattering();
             }
         }
 
