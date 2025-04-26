@@ -4,6 +4,7 @@ namespace TerrainGenerator.Components.Settings.Biomes.Scattering
 {
     public class BiomeScatteringSettings : ScriptableObject {
         [HideInInspector] public ScatteringType scatteringType;
+        public int numberOfPreinstantiatedObjects = 30;
         public int targetResolution;
         public GameObject scatteringObject;
         [Space(20)]
