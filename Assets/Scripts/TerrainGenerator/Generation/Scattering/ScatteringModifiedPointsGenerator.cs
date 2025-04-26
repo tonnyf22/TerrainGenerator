@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace TerrainGenerator.Generation.Scattering
 {
-    public class ScatteringObjectsGenerator
+    public class ScatteringModifiedPointsGenerator
     {
-        public static ScatteringObjectsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static ScatteringModifiedPointsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
-            return new ScatteringObjectsGenerator(
+            return new ScatteringModifiedPointsGenerator(
                 chunk,
                 seed,
                 scatteringInfluenceLevel,
@@ -26,18 +26,18 @@ namespace TerrainGenerator.Generation.Scattering
         public readonly BiomesDistribution biomesDistribution;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
 
-        private readonly ScatteringPointsGenerator scatteringPointsGenerator;
+        private readonly ScatteringRawPointsGenerator scatteringPointsGenerator;
         
         private DeterministicRandom deterministicRandom;
 
         private float distanceLimit;
 
         private RaycastHit hitDown;
-        private List<List<GameObject>> scatterings;
+        private Dictionary<BiomeScattering, List<ScatteringObjectParameters>> biomeScatteringObjectsParameters;
         private DetalizationLevel detalizationLevel;
-        private List<GameObject> scattering;
+        private List<ScatteringObjectParameters> scatteringObjectsParameters;
 
-        public ScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public ScatteringModifiedPointsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.seed = seed;
@@ -45,7 +45,7 @@ namespace TerrainGenerator.Generation.Scattering
             this.biomesScatteringSettings = biomesScatteringSettings;
             this.biomesDistribution = biomesDistribution;
             this.biomeGraphInterpreter = biomeGraphInterpreter;
-            scatteringPointsGenerator = ScatteringPointsGenerator.CreateScatteringPointsGenerator(
+            scatteringPointsGenerator = ScatteringRawPointsGenerator.CreateScatteringPointsGenerator(
                 chunk,
                 seed
             );
@@ -58,21 +58,23 @@ namespace TerrainGenerator.Generation.Scattering
             return biomesDistribution.biomeSubcellSize * 2.83f * scatteringInfluenceLevel;
         }
 
-        public List<List<GameObject>> CreateScatterings(DetalizationLevel detalizationLevel)
+        public Dictionary<BiomeScattering, List<ScatteringObjectParameters>> CreateBiomeScatteringObjectsParameters(DetalizationLevel detalizationLevel)
         {
-            scatterings = new List<List<GameObject>>();
+            biomeScatteringObjectsParameters = new Dictionary<BiomeScattering, List<ScatteringObjectParameters>>();
             this.detalizationLevel = detalizationLevel;
 
             LoopThroughEachBiomeSubsources();
 
-            return scatterings;
+            return biomeScatteringObjectsParameters;
         }
 
         private void LoopThroughEachBiomeSubsources()
         {
             foreach (int biomeIndex in biomesDistribution.biomeIndexToSubsources.Keys)
             {
+                scatteringObjectsParameters = new List<ScatteringObjectParameters>();
                 LoopThroughEachBiomeScattering(biomeIndex);
+                scatteringObjectsParameters = null;
             }
         }
 
@@ -85,17 +87,19 @@ namespace TerrainGenerator.Generation.Scattering
                     continue;
                 }
 
-                scattering = new List<GameObject>();
+                BiomeScattering biomeScattering = new BiomeScattering(
+                    biomeIndex,
+                    scatteringIndex
+                );
 
                 List<Vector3> pointsRaw = CreateRawScatteringPoints(
                     detalizationLevel,
                     biomeIndex,
                     scatteringIndex);
 
-                LoopThroughRawPointsOfBiomeScattering(biomeIndex, scatteringIndex, pointsRaw);
+                LoopThroughRawPointsOfBiomeScattering(biomeScattering, pointsRaw);
 
-                scatterings.Add(scattering);
-                scattering = null;
+                biomeScatteringObjectsParameters.Add(biomeScattering, scatteringObjectsParameters);
             }
         }
 
@@ -111,20 +115,20 @@ namespace TerrainGenerator.Generation.Scattering
                 biomesScatteringSettings[biomeIndex][scatteringIndex]);
         }
 
-        private void LoopThroughRawPointsOfBiomeScattering(int biomeIndex, int scatteringIndex, List<Vector3> pointsRaw)
+        private void LoopThroughRawPointsOfBiomeScattering(BiomeScattering biomeScattering, List<Vector3> pointsRaw)
         {
             for (int index = 0; index < pointsRaw.Count; index++)
             {
                 Vector3 point = pointsRaw[index];
 
                 // filter by distance to subsource points
-                if(IsNotClosestSubsourcePointWithinDistanceLimit(biomeIndex, point))
+                if(IsNotClosestSubsourcePointWithinDistanceLimit(biomeScattering.biomeIndex, point))
                 {
                     continue;
                 }
 
                 // filter by biome graph
-                if (IsNotKeepPointByBiomeGraph(biomeIndex, scatteringIndex,  point))
+                if (IsNotKeepPointByBiomeGraph(biomeScattering.biomeIndex, biomeScattering.scatteringIndex,  point))
                 {
                     continue;
                 }
@@ -136,18 +140,18 @@ namespace TerrainGenerator.Generation.Scattering
                 }
 
                 // filter by height range
-                if (IsNotPointHeightWithinScatteringHeightRange(biomeIndex, scatteringIndex, pointHit))
+                if (IsNotPointHeightWithinScatteringHeightRange(biomeScattering.biomeIndex, biomeScattering.scatteringIndex, pointHit))
                 {
                     continue;
                 }
 
                 // store scattering object
-                GameObject scatteringObject = InstantiateScatteringObjectOnPointHit(
-                    biomeIndex,
-                    scatteringIndex,
+                ScatteringObjectParameters scatteringObjectParameters = CalculateScatteringObjectParametersOnPointHit(
+                    biomeScattering.biomeIndex,
+                    biomeScattering.scatteringIndex,
                     pointHit
                 );
-                scattering.Add(scatteringObject);
+                scatteringObjectsParameters.Add(scatteringObjectParameters);
             }
         }
 
@@ -231,68 +235,79 @@ namespace TerrainGenerator.Generation.Scattering
             return result;
         }
 
-        private GameObject InstantiateScatteringObjectOnPointHit(int biomeIndex, int scatteringIndex, Vector3 pointHit)
+        private ScatteringObjectParameters CalculateScatteringObjectParametersOnPointHit(int biomeIndex, int scatteringIndex, Vector3 pointHit)
         {
-            GameObject scatteringObject = GameObject.Instantiate(
-                biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringObject,
-                pointHit,
-                biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringObject.transform.rotation);
+            Vector3 scatteringObjectScale = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringObject.transform.localScale;
 
-            // scale
-            CalculateScatteringObjectScale(biomeIndex, scatteringIndex, pointHit, scatteringObject);
-            // rotation
-            CalculateScatteringObjectRotation(biomeIndex, scatteringIndex, pointHit, scatteringObject);
+            Vector3 position = pointHit;
+            Vector3 scale = CalculateScatteringObjectScale(biomeIndex, scatteringIndex, pointHit, scatteringObjectScale);
+            Quaternion rotation = CalculateScatteringObjectRotation(biomeIndex, scatteringIndex, pointHit);
 
-            return scatteringObject;
+            ScatteringObjectParameters scatteringObjectParameters = new ScatteringObjectParameters(
+                position,
+                scale,
+                rotation
+            );
+
+            return scatteringObjectParameters;
         }
 
-        private void CalculateScatteringObjectScale(int biomeIndex, int scatteringIndex, Vector3 placePoint, GameObject scatteringObject)
+        private Vector3 CalculateScatteringObjectScale(int biomeIndex, int scatteringIndex, Vector3 placePoint, Vector3 scatteringObjectScale)
         {
-            float scale;
-            if (biomesScatteringSettings[biomeIndex][scatteringIndex].isApplyScaleRange)
+            Vector3 scale;
+            float scaleCalculated = 1.0f;
+
+            bool isApplyScaleRange = biomesScatteringSettings[biomeIndex][scatteringIndex].isApplyScaleRange;
+            float scaleMinSettings = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringScaleMin;
+            float scaleSettings = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringScale;
+
+            if (isApplyScaleRange)
             {
                 float rawOffsetScale = deterministicRandom.Value01(
                     biomeIndex * scatteringIndex,
                     placePoint.z * biomeIndex,
                     placePoint.x * scatteringIndex);
-                scale =
-                    biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringScaleMin +
-                    rawOffsetScale *
-                        (biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringScale -
-                        biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringScaleMin);
+                scaleCalculated *= scaleMinSettings + rawOffsetScale * (scaleSettings - scaleMinSettings);
             }
             else
             {
-                scale = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringScale;
+                scaleCalculated *= scaleSettings;
             }
-            scatteringObject.transform.localScale *= scale;
+
+            scale = scatteringObjectScale * scaleCalculated;
+
+            return scale;
         }
 
-        private void CalculateScatteringObjectRotation(int biomeIndex, int scatteringIndex, Vector3 placePoint, GameObject scatteringObject)
+        private Quaternion CalculateScatteringObjectRotation(int biomeIndex, int scatteringIndex, Vector3 placePoint)
         {
-            float rotation;
-            if (biomesScatteringSettings[biomeIndex][scatteringIndex].isApplyRotationRange)
+            float rotationValue;
+
+            bool isApplyRotationRange = biomesScatteringSettings[biomeIndex][scatteringIndex].isApplyRotationRange;
+            float rotationMinSettings = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringRotationMin;
+            float rotationSettings = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringRotation;
+
+            if (isApplyRotationRange)
             {
                 float rawOffsetRotation = deterministicRandom.Value01(
                     placePoint.x * biomeIndex,
                     biomeIndex * scatteringIndex,
                     placePoint.z * scatteringIndex);
-                rotation =
-                    biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringRotationMin +
-                    rawOffsetRotation *
-                        (biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringRotation -
-                        biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringRotationMin);
+                rotationValue = rotationMinSettings + rawOffsetRotation * (rotationSettings - rotationMinSettings);
             }
             else
             {
-                rotation = biomesScatteringSettings[biomeIndex][scatteringIndex].scatteringRotation;
+                rotationValue = rotationSettings;
             }
-            scatteringObject.transform.rotation = Quaternion.Euler(
+
+            Quaternion rotationQuaternion = Quaternion.Euler(
                 new Vector3(
                     0.0f,
-                    rotation,
+                    rotationValue,
                     0.0f
                 ));
+
+            return rotationQuaternion;
         }
     }
 }
