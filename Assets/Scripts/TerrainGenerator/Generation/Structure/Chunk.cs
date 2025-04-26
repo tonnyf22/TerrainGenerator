@@ -90,7 +90,7 @@ namespace TerrainGenerator.Generation.Structure
         public SurfaceMeshGenerator surfaceMeshGenerator { get; private set; }
         public SurfaceDisplacementGenerator surfaceDisplacementGenerator { get; private set; }
         public WaterMeshGenerator waterMeshGenerator { get; private set; }
-        public ScatteringObjectsGenerator scatteringObjectsGenerator { get; private set; }
+        public ScatteringModifiedPointsGenerator scatteringObjectsGenerator { get; private set; }
 
         public Chunk(float chunkSize, ChunkCoordinates chunkCoordinates, int numberOfDetalizationLevels, GameObject parentGameObject)
         {
@@ -184,7 +184,7 @@ namespace TerrainGenerator.Generation.Structure
             }
         }
 
-        public void AddScatteringObjectsGenerator(ScatteringObjectsGenerator scatteringObjectsGenerator)
+        public void AddScatteringObjectsGenerator(ScatteringModifiedPointsGenerator scatteringObjectsGenerator)
         {
             if (this.scatteringObjectsGenerator != null)
             {
@@ -193,6 +193,27 @@ namespace TerrainGenerator.Generation.Structure
             else
             {
                 this.scatteringObjectsGenerator = scatteringObjectsGenerator;
+            }
+        }
+
+        public void Show()
+        {
+            if (!chunkGameObject.activeSelf)
+            {
+                chunkGameObject.SetActive(true);
+            }
+        }
+
+        public void Hide()
+        {
+            if (chunkGameObject.activeSelf)
+            {
+                chunkGameObject.SetActive(false);
+
+                foreach (var pair in detalizationLevels)
+                {
+                    pair.Value.Hide();
+                }
             }
         }
 
@@ -257,6 +278,18 @@ namespace TerrainGenerator.Generation.Structure
             }
             else
             {
+                detalizationLevels[levelIndex].Show();
+            }
+        }
+
+        public void HideDetalizationLevelsExcept(int levelIndex)
+        {
+            if (!detalizationLevels.ContainsKey(levelIndex))
+            {
+                throw new ArgumentException($"Detalization level index {levelIndex} does not exist for this chunk.");
+            }
+            else
+            {
                 for (int index = 0; index < numberOfDetalizationLevels; index++)
                 {
                     if (!detalizationLevels.ContainsKey(index))
@@ -265,7 +298,7 @@ namespace TerrainGenerator.Generation.Structure
                     }
                     else if (index == levelIndex)
                     {
-                        detalizationLevels[index].Show();
+                        continue;
                     }
                     else
                     {
