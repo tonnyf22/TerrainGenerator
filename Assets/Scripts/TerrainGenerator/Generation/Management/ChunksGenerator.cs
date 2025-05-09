@@ -193,7 +193,7 @@ namespace TerrainGenerator.Generation.Management
             );
             chunk.AddSurfaceMeshGenerator(surfaceMeshGenerator);
 
-            SurfaceDisplacementGenerator surfaceDisplacementGenerator = SurfaceDisplacementGenerator.CreateDisplacementGenerator(
+            RegularSurfaceDisplacementGenerator surfaceDisplacementGenerator = RegularSurfaceDisplacementGenerator.CreateDisplacementGenerator(
                 chunk,
                 biomesSystemSettings.displacementInterblendLevel,
                 biomesSystemSettings.displacementInfluenceLevel,
@@ -207,13 +207,13 @@ namespace TerrainGenerator.Generation.Management
             );
             chunk.AddWaterMeshGenerator(waterMeshGenerator);
 
-            ScatteringModifiedPointsGenerator scatteringObjectsGenerator = ScatteringModifiedPointsGenerator.CreateScatteringObjectsGenerator(
+            RegularScatteringModifiedPointsGenerator scatteringObjectsGenerator = RegularScatteringModifiedPointsGenerator.CreateScatteringObjectsGenerator(
                 chunk,
                 seed,
                 biomesSystemSettings.scatteringInfluenceLevel,
                 generatorSettingsInterpreter.GetBiomesScatteringSettings(),
-                chunk.surfaceDisplacementGenerator.biomesDistribution,
-                chunk.surfaceDisplacementGenerator.biomeGraphInterpreter
+                (chunk.surfaceDisplacementGenerator as RegularSurfaceDisplacementGenerator).biomesDistribution,
+                (chunk.surfaceDisplacementGenerator as RegularSurfaceDisplacementGenerator).biomeGraphInterpreter
             );
             chunk.AddScatteringObjectsGenerator(scatteringObjectsGenerator);
 
