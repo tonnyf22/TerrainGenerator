@@ -19,6 +19,9 @@ namespace TerrainGenerator.Generation.Scattering
         public readonly string seed;
         private DeterministicRandom deterministicRandom;
 
+        private int biomeIndex;
+        private int scatteringIndex;
+
         public ScatteringRawPointsGenerator(Chunk chunk, string seed)
         {
             this.chunk = chunk;
@@ -26,8 +29,11 @@ namespace TerrainGenerator.Generation.Scattering
             deterministicRandom = new DeterministicRandom(seed);
         }
 
-        public List<Vector3> CreatePoints(ObjectsScattering objectsScattering, BiomeScatteringSettings biomeScatteringSettings)
+        public List<Vector3> CreatePoints(int biomeIndex, int scatteringIndex, ObjectsScattering objectsScattering, BiomeScatteringSettings biomeScatteringSettings)
         {
+            this.biomeIndex = biomeIndex;
+            this.scatteringIndex = scatteringIndex;
+
             switch (biomeScatteringSettings.scatteringType)
             {
                 case ScatteringType.Random:
@@ -126,16 +132,15 @@ namespace TerrainGenerator.Generation.Scattering
                     {
                         missedPoints = 0;
 
+                        CreateAndStorePointGridBased(
+                            points,
+                            xIndex,
+                            zIndex,
+                            biomeGridBasedScatteringSettings.targetResolution,
+                            biomeGridBasedScatteringSettings.randomStep,
+                            biomeGridBasedScatteringSettings.isApplyStepRange,
+                            biomeGridBasedScatteringSettings.randomStepMin);
                     }
-
-                    CreateAndStorePointGridBased(
-                        points,
-                        xIndex,
-                        zIndex,
-                        biomeGridBasedScatteringSettings.targetResolution,
-                        biomeGridBasedScatteringSettings.randomStep,
-                        biomeGridBasedScatteringSettings.isApplyStepRange,
-                        biomeGridBasedScatteringSettings.randomStepMin);
                 }
             }
         }
@@ -160,8 +165,8 @@ namespace TerrainGenerator.Generation.Scattering
 
         private void CreateAndStorePointRandom(List<Vector3> points, int index)
         {
-            float rawOffsetX = deterministicRandom.Value01(chunk.chunkCoordinates.x, index, chunk.chunkCoordinates.z);
-            float rawOffsetZ = deterministicRandom.Value01(chunk.chunkCoordinates.z, chunk.chunkCoordinates.x, index);
+            float rawOffsetX = deterministicRandom.Value01(index + biomeIndex + scatteringIndex, index, chunk.chunkCoordinates.x * chunk.chunkCoordinates.z);
+            float rawOffsetZ = deterministicRandom.Value01(chunk.chunkCoordinates.z * chunk.chunkCoordinates.x, index + biomeIndex + scatteringIndex, index);
 
             float x = chunk.chunkSize * rawOffsetX;
             float z = chunk.chunkSize * rawOffsetZ;
