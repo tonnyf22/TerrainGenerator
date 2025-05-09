@@ -88,9 +88,9 @@ namespace TerrainGenerator.Generation.Structure
         public readonly GameObject chunkGameObject;
         public readonly Dictionary<int, DetalizationLevel> detalizationLevels;
         public SurfaceMeshGenerator surfaceMeshGenerator { get; private set; }
-        public SurfaceDisplacementGenerator surfaceDisplacementGenerator { get; private set; }
+        public ISurfaceDisplacementGenerator surfaceDisplacementGenerator { get; private set; }
         public WaterMeshGenerator waterMeshGenerator { get; private set; }
-        public ScatteringModifiedPointsGenerator scatteringObjectsGenerator { get; private set; }
+        public IScatteringModifiedPointsGenerator scatteringObjectsGenerator { get; private set; }
 
         public Chunk(float chunkSize, ChunkCoordinates chunkCoordinates, int numberOfDetalizationLevels, GameObject parentGameObject)
         {
@@ -136,7 +136,7 @@ namespace TerrainGenerator.Generation.Structure
             }
         }
 
-        public void AddSurfaceDisplacementGenerator(SurfaceDisplacementGenerator surfaceDisplacementGenerator)
+        public void AddSurfaceDisplacementGenerator(ISurfaceDisplacementGenerator surfaceDisplacementGenerator)
         {
             if (this.surfaceDisplacementGenerator != null)
             {
@@ -184,7 +184,7 @@ namespace TerrainGenerator.Generation.Structure
             }
         }
 
-        public void AddScatteringObjectsGenerator(ScatteringModifiedPointsGenerator scatteringObjectsGenerator)
+        public void AddScatteringObjectsGenerator(IScatteringModifiedPointsGenerator scatteringObjectsGenerator)
         {
             if (this.scatteringObjectsGenerator != null)
             {
@@ -193,6 +193,18 @@ namespace TerrainGenerator.Generation.Structure
             else
             {
                 this.scatteringObjectsGenerator = scatteringObjectsGenerator;
+            }
+        }
+
+        public void RemoveScatteringObjectsGenerator()
+        {
+            if (this.scatteringObjectsGenerator == null)
+            {
+                throw new ArgumentException($"Scattering objects generator does not exist for this chunk.");
+            }
+            else
+            {
+                this.scatteringObjectsGenerator = null;
             }
         }
 
@@ -214,18 +226,6 @@ namespace TerrainGenerator.Generation.Structure
                 {
                     pair.Value.Hide();
                 }
-            }
-        }
-
-        public void RemoveScatteringObjectsGenerator()
-        {
-            if (this.scatteringObjectsGenerator == null)
-            {
-                throw new ArgumentException($"Scattering objects generator does not exist for this chunk.");
-            }
-            else
-            {
-                this.scatteringObjectsGenerator = null;
             }
         }
 
