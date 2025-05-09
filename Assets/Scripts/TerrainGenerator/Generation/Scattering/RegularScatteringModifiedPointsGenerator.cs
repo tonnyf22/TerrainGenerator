@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace TerrainGenerator.Generation.Scattering
 {
-    public class ScatteringModifiedPointsGenerator
+    public class RegularScatteringModifiedPointsGenerator : IScatteringModifiedPointsGenerator
     {
-        public static ScatteringModifiedPointsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static RegularScatteringModifiedPointsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
-            return new ScatteringModifiedPointsGenerator(
+            return new RegularScatteringModifiedPointsGenerator(
                 chunk,
                 seed,
                 scatteringInfluenceLevel,
@@ -37,7 +37,7 @@ namespace TerrainGenerator.Generation.Scattering
         private DetalizationLevel detalizationLevel;
         private List<ScatteringObjectParameters> scatteringObjectsParameters;
 
-        public ScatteringModifiedPointsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public RegularScatteringModifiedPointsGenerator(Chunk chunk, string seed, float scatteringInfluenceLevel, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.seed = seed;
@@ -72,9 +72,7 @@ namespace TerrainGenerator.Generation.Scattering
         {
             foreach (int biomeIndex in biomesDistribution.biomeIndexToSubsources.Keys)
             {
-                scatteringObjectsParameters = new List<ScatteringObjectParameters>();
                 LoopThroughEachBiomeScattering(biomeIndex);
-                scatteringObjectsParameters = null;
             }
         }
 
@@ -82,6 +80,8 @@ namespace TerrainGenerator.Generation.Scattering
         {
             for (int scatteringIndex = 0; scatteringIndex < biomesScatteringSettings[biomeIndex].Length; scatteringIndex++)
             {
+                scatteringObjectsParameters = new List<ScatteringObjectParameters>();
+
                 if (IsNoScatteringsForBiome(biomeIndex, scatteringIndex))
                 {
                     continue;
@@ -96,10 +96,12 @@ namespace TerrainGenerator.Generation.Scattering
                     detalizationLevel,
                     biomeIndex,
                     scatteringIndex);
-
+                
                 LoopThroughRawPointsOfBiomeScattering(biomeScattering, pointsRaw);
 
                 biomeScatteringObjectsParameters.Add(biomeScattering, scatteringObjectsParameters);
+
+                scatteringObjectsParameters = null;
             }
         }
 
@@ -111,6 +113,8 @@ namespace TerrainGenerator.Generation.Scattering
         private List<Vector3> CreateRawScatteringPoints(DetalizationLevel detalizationLevel, int biomeIndex, int scatteringIndex)
         {
             return scatteringPointsGenerator.CreatePoints(
+                biomeIndex,
+                scatteringIndex,
                 detalizationLevel.scattering,
                 biomesScatteringSettings[biomeIndex][scatteringIndex]);
         }

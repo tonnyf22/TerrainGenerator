@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace TerrainGenerator.Generation.Surface
 {
-    public class SurfaceDisplacementGenerator
+    public class RegularSurfaceDisplacementGenerator : ISurfaceDisplacementGenerator
     {
-        public static SurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, float displacementInfluenceLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static RegularSurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, float displacementInfluenceLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
-            return new SurfaceDisplacementGenerator(
+            return new RegularSurfaceDisplacementGenerator(
                 chunk,
                 displacementInterblendLevel,
                 displacementInfluenceLevel,
@@ -24,7 +24,7 @@ namespace TerrainGenerator.Generation.Surface
         public readonly BiomesDistribution biomesDistribution;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
 
-        public SurfaceDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, float displacementInfluenceLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
+        public RegularSurfaceDisplacementGenerator(Chunk chunk, int displacementInterblendLevel, float displacementInfluenceLevel, BiomesDistribution biomesDistribution, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.displacementInterblendLevel = displacementInterblendLevel;
