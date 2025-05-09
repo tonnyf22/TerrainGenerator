@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BiomeGridBasedScatteringSettings
   m_EditorClassIdentifier: 
   scatteringType: 1
+  numberOfPreinstantiatedObjects: 30
   targetResolution: 5
   scatteringObject: {fileID: 4787056687105379865, guid: 460c3a8a453c6821194fd17c7aad7cee, type: 3}
   scatteringScale: 2
@@ -23,6 +24,6 @@ MonoBehaviour:
   scatteringRotationMin: 0
   scatteringMinHeight: 0.5
   scatteringMaxHeight: 1000
-  randomStep: 0.5
+  randomStep: 2
   isApplyStepRange: 1
   randomStepMin: 0

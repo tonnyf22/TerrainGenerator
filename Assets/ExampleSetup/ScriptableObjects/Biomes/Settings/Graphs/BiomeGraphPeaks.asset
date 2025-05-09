@@ -106,6 +106,62 @@ MonoBehaviour:
   inputA: 0
   inputB: 1
   value: 0
+--- !u!114 &-4721925112253805513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b2c223ed20778e42b6550803cd4b44e, type: 3}
+  m_Name: Less Than
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1048, y: 776}
+  ports:
+    keys:
+    - inputA
+    - inputB
+    - value
+    values:
+    - _fieldName: inputA
+      _node: {fileID: -4721925112253805513}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: value
+        node: {fileID: 7404071883252597661}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: inputB
+      _node: {fileID: -4721925112253805513}
+      _typeQualifiedName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: value
+      _node: {fileID: -4721925112253805513}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: isKeepPoint 1
+        node: {fileID: -991452485118376092}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  inputA: -0.47591984
+  inputB: 4
+  value: 0
 --- !u!114 &-2161447294565941625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +251,7 @@ MonoBehaviour:
     - height
     - isKeepPoint
     - isKeepPoint 0
+    - isKeepPoint 1
     values:
     - _fieldName: height
       _node: {fileID: -991452485118376092}
@@ -229,8 +286,20 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
+    - _fieldName: isKeepPoint 1
+      _node: {fileID: -991452485118376092}
+      _typeQualifiedName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: value
+        node: {fileID: -4721925112253805513}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
   height: 1.9999931
-  isKeepPoint: 00
+  isKeepPoint: 0000
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +323,7 @@ MonoBehaviour:
   - {fileID: 6606605479394278624}
   - {fileID: -5789583736533517395}
   - {fileID: 7292607761276730828}
+  - {fileID: -4721925112253805513}
 --- !u!114 &598630048552448486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +377,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: -3.47592
+  inputA: -0.47591984
   inputB: 1
   value: 0
 --- !u!114 &4958910049047431197
@@ -556,7 +626,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: -3.47592
+  inputA: -0.47591984
   inputB: 4
   value: 0
 --- !u!114 &7292607761276730828
@@ -673,10 +743,13 @@ MonoBehaviour:
       - fieldName: inputA
         node: {fileID: 6606605479394278624}
         reroutePoints: []
+      - fieldName: inputA
+        node: {fileID: -4721925112253805513}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  inputA: -0.347592
+  inputA: -0.047591984
   inputB: 10
   value: 0

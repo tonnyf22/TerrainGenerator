@@ -18,7 +18,7 @@ MonoBehaviour:
   scatteringObject: {fileID: 4787056687105379865, guid: 460c3a8a453c6821194fd17c7aad7cee, type: 3}
   scatteringScale: 2
   isApplyScaleRange: 1
-  scatteringScaleMin: 1
+  scatteringScaleMin: 0.5
   scatteringRotation: 30
   isApplyRotationRange: 1
   scatteringRotationMin: 0
