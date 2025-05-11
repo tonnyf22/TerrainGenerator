@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TerrainGenerator.Components.Settings.Biomes;
 using TerrainGenerator.Components.Settings.Chunks;
+using TerrainGenerator.Generation.Appearance;
 using TerrainGenerator.Generation.Scattering;
 using TerrainGenerator.Generation.Structure;
 using TerrainGenerator.Generation.Surface;
@@ -11,18 +12,22 @@ namespace TerrainGenerator.Generation.Management
 {
     public class BiomePreviewerChunksGenerator
     {
-        public static BiomePreviewerChunksGenerator CreateBiomePreviewerChunksGenerator(string seed, ChunksSettings chunksSettings, BiomesSystemSettings biomesSystemSettings, GameObject generationParentGameObject)
+        public static BiomePreviewerChunksGenerator CreateBiomePreviewerChunksGenerator(string seed, int chunkLODIndexToPreview, ChunksSettings chunksSettings, int biomeSystemSettingsIndexToPreview, BiomesSystemSettings biomesSystemSettings, GameObject generationParentGameObject)
         {
             return new BiomePreviewerChunksGenerator(
                 seed,
+                chunkLODIndexToPreview,
                 chunksSettings,
+                biomeSystemSettingsIndexToPreview,
                 biomesSystemSettings,
                 generationParentGameObject
             );
         }
 
         public readonly string seed;
+        public readonly int chunkLODIndexToPreview;
         public readonly ChunksSettings chunksSettings;
+        public readonly int biomeSystemSettingsIndexToPreview;
         public readonly BiomesSystemSettings biomesSystemSettings;
         public readonly GameObject generationParentGameObject;
 
@@ -35,10 +40,12 @@ namespace TerrainGenerator.Generation.Management
 
         private Dictionary<ChunkCoordinates, Chunk> chunks = new Dictionary<ChunkCoordinates, Chunk>();
 
-        public BiomePreviewerChunksGenerator(string seed, ChunksSettings chunksSettings, BiomesSystemSettings biomesSystemSettings, GameObject generationParentGameObject)
+        public BiomePreviewerChunksGenerator(string seed, int chunkLODIndexToPreview, ChunksSettings chunksSettings, int biomeSystemSettingsIndexToPreview, BiomesSystemSettings biomesSystemSettings, GameObject generationParentGameObject)
         {
             this.seed = seed;
+            this.chunkLODIndexToPreview = chunkLODIndexToPreview;
             this.chunksSettings = chunksSettings;
+            this.biomeSystemSettingsIndexToPreview = biomeSystemSettingsIndexToPreview;
             this.biomesSystemSettings = biomesSystemSettings;
             this.generationParentGameObject = generationParentGameObject;
             generatorSettingsInterpreter = GeneratorSettingsInterpreter.CreateGeneratorSettingsInterpreter(
@@ -69,7 +76,7 @@ namespace TerrainGenerator.Generation.Management
                         {
                             Chunk chunk = CreateChunkInChunkCoordinates(chunkCoordinates);
                             
-                            CreateChunkDetalizationLevel(chunk, 0);
+                            CreateChunkDetalizationLevel(chunk, chunkLODIndexToPreview);
                         }
                         else
                         {
@@ -98,9 +105,16 @@ namespace TerrainGenerator.Generation.Management
 
             BiomePreviewerSurfaceDisplacementGenerator surfaceDisplacementGenerator = BiomePreviewerSurfaceDisplacementGenerator.CreateDisplacementGenerator(
                 chunk,
+                biomeSystemSettingsIndexToPreview,
                 generatorSettingsInterpreter.CreateBiomeGraphInterpreter()  // TODO: make an object pool for BiomeGraphInterpreter objects
             );
             chunk.AddSurfaceDisplacementGenerator(surfaceDisplacementGenerator);
+
+            BiomePreviewerTextureBlendingGenerator biomePreviewerTextureBlendingGenerator = BiomePreviewerTextureBlendingGenerator.CreateTextureBlendingGenerator(
+                chunk,
+                biomeSystemSettingsIndexToPreview
+            );
+            chunk.AddTextureBlendingGenerator(biomePreviewerTextureBlendingGenerator);
 
             WaterMeshGenerator waterMeshGenerator = WaterMeshGenerator.CreateWaterMeshGenerator(
                 chunk
@@ -110,8 +124,8 @@ namespace TerrainGenerator.Generation.Management
             BiomePreviewerScatteringModifiedPointsGenerator scatteringObjectsGenerator = BiomePreviewerScatteringModifiedPointsGenerator.CreateScatteringObjectsGenerator(
                 chunk,
                 seed,
+                biomeSystemSettingsIndexToPreview,
                 generatorSettingsInterpreter.GetBiomesScatteringSettings(),
-                // (chunk.surfaceDisplacementGenerator as BiomePreviewerSurfaceDisplacementGenerator).biomesDistribution,
                 (chunk.surfaceDisplacementGenerator as BiomePreviewerSurfaceDisplacementGenerator).biomeGraphInterpreter
             );
             chunk.AddScatteringObjectsGenerator(scatteringObjectsGenerator);
@@ -182,6 +196,8 @@ namespace TerrainGenerator.Generation.Management
                 detalizationLevel.ApplySurfaceCollision(surfaceMesh);
             }
             MeshNormalsGenerator.RecalculateMeshNormals(surfaceMesh);
+
+            chunk.textureBlendingGenerator.ApplyTextureBlendingMetadataToMesh(surfaceMesh);
 
             if (generatorSettingsInterpreter.GetChunkLODSettings(indexLOD).isApplyScattering)
             {
