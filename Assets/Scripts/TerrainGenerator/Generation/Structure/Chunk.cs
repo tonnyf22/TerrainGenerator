@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TerrainGenerator.Generation.Appearance;
 using TerrainGenerator.Generation.Scattering;
 using TerrainGenerator.Generation.Surface;
 using TerrainGenerator.Generation.Water;
@@ -89,6 +90,7 @@ namespace TerrainGenerator.Generation.Structure
         public readonly Dictionary<int, DetalizationLevel> detalizationLevels;
         public SurfaceMeshGenerator surfaceMeshGenerator { get; private set; }
         public ISurfaceDisplacementGenerator surfaceDisplacementGenerator { get; private set; }
+        public ITextureBlendingGenerator textureBlendingGenerator { get; private set; }
         public WaterMeshGenerator waterMeshGenerator { get; private set; }
         public IScatteringModifiedPointsGenerator scatteringObjectsGenerator { get; private set; }
 
@@ -157,6 +159,30 @@ namespace TerrainGenerator.Generation.Structure
             else
             {
                 this.surfaceDisplacementGenerator = null;
+            }
+        }
+
+        public void AddTextureBlendingGenerator(ITextureBlendingGenerator textureBlendingGenerator)
+        {
+            if (this.textureBlendingGenerator != null)
+            {
+                throw new ArgumentException($"Texture blending generator already exists for this chunk.");
+            }
+            else
+            {
+                this.textureBlendingGenerator = textureBlendingGenerator;
+            }
+        }
+
+        public void RemoveTextureBlendingGenerator()
+        {
+            if (this.textureBlendingGenerator == null)
+            {
+                throw new ArgumentException($"Texture blending generator does not exist for this chunk.");
+            }
+            else
+            {
+                this.textureBlendingGenerator = null;
             }
         }
 
