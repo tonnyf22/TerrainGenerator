@@ -8,17 +8,19 @@ namespace TerrainGenerator.Generation.Scattering
 {
     public class BiomePreviewerScatteringModifiedPointsGenerator : IScatteringModifiedPointsGenerator
     {
-        public static BiomePreviewerScatteringModifiedPointsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static BiomePreviewerScatteringModifiedPointsGenerator CreateScatteringObjectsGenerator(Chunk chunk, string seed, int biomeSystemSettingsIndexToPreview, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             return new BiomePreviewerScatteringModifiedPointsGenerator(
                 chunk,
                 seed,
+                biomeSystemSettingsIndexToPreview,
                 biomesScatteringSettings,
                 biomeGraphInterpreter);
         }
 
         public readonly Chunk chunk;
         public readonly string seed;
+        public readonly int biomeSystemSettingsIndexToPreview;
         public readonly Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
 
@@ -31,10 +33,11 @@ namespace TerrainGenerator.Generation.Scattering
         private DetalizationLevel detalizationLevel;
         private List<ScatteringObjectParameters> scatteringObjectsParameters;
 
-        public BiomePreviewerScatteringModifiedPointsGenerator(Chunk chunk, string seed, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomeGraphInterpreter biomeGraphInterpreter)
+        public BiomePreviewerScatteringModifiedPointsGenerator(Chunk chunk, string seed, int biomeSystemSettingsIndexToPreview, Dictionary<int, BiomeScatteringSettings[]> biomesScatteringSettings, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
             this.seed = seed;
+            this.biomeSystemSettingsIndexToPreview = biomeSystemSettingsIndexToPreview;
             this.biomesScatteringSettings = biomesScatteringSettings;
             this.biomeGraphInterpreter = biomeGraphInterpreter;
             scatteringPointsGenerator = ScatteringRawPointsGenerator.CreateScatteringPointsGenerator(
@@ -49,8 +52,7 @@ namespace TerrainGenerator.Generation.Scattering
             biomeScatteringObjectsParameters = new Dictionary<BiomeScattering, List<ScatteringObjectParameters>>();
             this.detalizationLevel = detalizationLevel;
 
-            int biomeIndex = 0;
-            LoopThroughEachBiomeScattering(biomeIndex);
+            LoopThroughEachBiomeScattering(biomeSystemSettingsIndexToPreview);
 
             return biomeScatteringObjectsParameters;
         }
