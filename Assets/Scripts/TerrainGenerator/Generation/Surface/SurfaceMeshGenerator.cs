@@ -25,6 +25,7 @@ namespace TerrainGenerator.Generation.Surface
             Mesh mesh = new Mesh();
 
             GenerateVertices(mesh, detalizationLevel.meshResolution);
+            GenerateUVs(mesh, detalizationLevel.meshResolution);
             GenerateTriangles(mesh, detalizationLevel.meshFillType, detalizationLevel.meshResolution);
 
             return mesh;
@@ -44,6 +45,25 @@ namespace TerrainGenerator.Generation.Surface
             }
 
             mesh.SetVertices(vertices);
+        }
+
+        private void GenerateUVs(Mesh mesh, int meshResolution)
+        {
+            Vector2[] uv = new Vector2[meshResolution * meshResolution];
+
+            for (int xIndex = 0; xIndex < meshResolution; xIndex++)
+            {
+                for (int zIndex = 0; zIndex < meshResolution; zIndex++)
+                {
+                    int index = zIndex + xIndex * meshResolution;
+
+                    uv[index] = new Vector2(
+                        zIndex * 1.0f / (meshResolution - 1),
+                        xIndex * 1.0f / (meshResolution - 1));
+                }
+            }
+
+            mesh.uv = uv;
         }
 
         private void GenerateTriangles(Mesh mesh, MeshFillType meshFillType, int meshResolution)
