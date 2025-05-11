@@ -6,6 +6,7 @@ using TerrainGenerator.Generation.Surface;
 using TerrainGenerator.Generation.Water;
 using TerrainGenerator.Generation.Scattering;
 using UnityEngine;
+using TerrainGenerator.Generation.Appearance;
 
 namespace TerrainGenerator.Generation.Management
 {
@@ -202,6 +203,12 @@ namespace TerrainGenerator.Generation.Management
             );
             chunk.AddSurfaceDisplacementGenerator(surfaceDisplacementGenerator);
 
+            RegularTextureBlendingGenerator regularTextureBlendingGenerator = new RegularTextureBlendingGenerator(
+                chunk,
+                (chunk.surfaceDisplacementGenerator as RegularSurfaceDisplacementGenerator).biomesDistribution
+            );
+            chunk.AddTextureBlendingGenerator(regularTextureBlendingGenerator);
+
             WaterMeshGenerator waterMeshGenerator = WaterMeshGenerator.CreateWaterMeshGenerator(
                 chunk
             );
@@ -290,6 +297,8 @@ namespace TerrainGenerator.Generation.Management
                 detalizationLevel.ApplySurfaceCollision(surfaceMesh);
             }
             MeshNormalsGenerator.RecalculateMeshNormals(surfaceMesh);
+
+            chunk.textureBlendingGenerator.ApplyTextureBlendingMetadataToMesh(surfaceMesh);
 
             if (generatorSettingsInterpreter.GetChunkLODSettings(indexLOD).isApplyScattering)
             {
