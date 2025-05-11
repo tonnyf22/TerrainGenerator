@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &79930728
 Transform:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanTimeInterval: 0.1
-  seed: SQF4S24213543AFE424088
+  seed: DAGG23GSFBS98HYFH
   generationCenter: {fileID: 879789459}
   chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
   biomesSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
@@ -398,13 +398,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.2090646, y: -0.25268397, z: 0.056018684, w: 0.9430295}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 25, y: -30, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,7 +475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1963770688
 Transform:
   m_ObjectHideFlags: 0
@@ -503,10 +503,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ae616eb12c4b561b6751a50cae3619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: SQF4S24213543AFE424088
+  seed: DAGG23GSFBS98HYFH
   chunksPerQuadrantDimension: 5
-  chunksSettings: {fileID: 11400000, guid: 1e315ef87e2e617cba7c8902283c6887, type: 2}
-  biomesSystemSettings: {fileID: 11400000, guid: 4318d4b4f36a368dab3872e96ccaa847, type: 2}
+  chunkLODIndexToPreview: 0
+  chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
+  biomeSystemSettingsIndexToPreview: 2
+  biomesSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
   materialSurface: {fileID: 2100000, guid: c998cd3711f96f8eb8a7686d6ca39ca2, type: 2}
   materialWater: {fileID: 2100000, guid: a0d7fbdd6fde46ae2890516998dfc12e, type: 2}
 --- !u!1660057539 &9223372036854775807
