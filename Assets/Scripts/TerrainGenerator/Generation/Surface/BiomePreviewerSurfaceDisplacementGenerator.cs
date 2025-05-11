@@ -6,20 +6,23 @@ namespace TerrainGenerator.Generation.Surface
 {
     public class BiomePreviewerSurfaceDisplacementGenerator : ISurfaceDisplacementGenerator
     {
-        public static BiomePreviewerSurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, BiomeGraphInterpreter biomeGraphInterpreter)
+        public static BiomePreviewerSurfaceDisplacementGenerator CreateDisplacementGenerator(Chunk chunk, int biomeSystemSettingsIndexToPreview, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             return new BiomePreviewerSurfaceDisplacementGenerator(
                 chunk,
+                biomeSystemSettingsIndexToPreview,
                 biomeGraphInterpreter
             );
         }
 
         public readonly Chunk chunk;
+        public readonly int biomeSystemSettingsIndexToPreview;
         public readonly BiomeGraphInterpreter biomeGraphInterpreter;
 
-        public BiomePreviewerSurfaceDisplacementGenerator(Chunk chunk, BiomeGraphInterpreter biomeGraphInterpreter)
+        public BiomePreviewerSurfaceDisplacementGenerator(Chunk chunk, int biomeSystemSettingsIndexToPreview, BiomeGraphInterpreter biomeGraphInterpreter)
         {
             this.chunk = chunk;
+            this.biomeSystemSettingsIndexToPreview = biomeSystemSettingsIndexToPreview;
             this.biomeGraphInterpreter = biomeGraphInterpreter;
         }
 
@@ -57,7 +60,7 @@ namespace TerrainGenerator.Generation.Surface
         private float GetHeightFromBiomeInVertexGlobal(Vector3 vertexGlobal)
         {
             return biomeGraphInterpreter.GetBiomeHeight(
-                0,
+                biomeSystemSettingsIndexToPreview,
                 vertexGlobal.x,
                 vertexGlobal.z);
         }
