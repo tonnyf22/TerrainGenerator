@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanTimeInterval: 0.1
-  seed: DAGG23GSFBS98HYFH
+  seed: DAGG23GSFBS98SHYF
   generationCenter: {fileID: 879789459}
   chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
   biomesSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
@@ -503,11 +503,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ae616eb12c4b561b6751a50cae3619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: DAGG23GSFBS98HYFH
+  seed: DAGG23GSFBS98SHYF
   chunksPerQuadrantDimension: 5
   chunkLODIndexToPreview: 0
   chunksSettings: {fileID: 11400000, guid: 1e41fff8707783846a966eafe05b0588, type: 2}
-  biomeSystemSettingsIndexToPreview: 2
+  biomeSystemSettingsIndexToPreview: 1
   biomesSystemSettings: {fileID: 11400000, guid: aa132b02cbbf131e08a1d38112cc96bd, type: 2}
   materialSurface: {fileID: 2100000, guid: c998cd3711f96f8eb8a7686d6ca39ca2, type: 2}
   materialWater: {fileID: 2100000, guid: a0d7fbdd6fde46ae2890516998dfc12e, type: 2}
