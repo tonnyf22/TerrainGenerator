@@ -15,11 +15,11 @@ MonoBehaviour:
   scatteringType: 0
   numberOfPreinstantiatedObjects: 50
   targetResolution: 2
-  scatteringObject: {fileID: 667504947227132768, guid: dcfb65d6358c2b210893625ff3102912, type: 3}
+  scatteringObject: {fileID: 1041740705640151173, guid: 63ef474474c49511caf3fecb0fc6928e, type: 3}
   scatteringScale: 2
   isApplyScaleRange: 1
-  scatteringScaleMin: 0.5
-  scatteringRotation: 20
+  scatteringScaleMin: 1.5
+  scatteringRotation: 360
   isApplyRotationRange: 1
   scatteringRotationMin: 0
   scatteringMinHeight: 0.05
