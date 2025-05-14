@@ -1,4 +1,4 @@
-Shader "Custom/BiomeTerrainLitUnderwater"
+Shader "Custom/TerrainGeneratorShader"
 {
     Properties
     {
