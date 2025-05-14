@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   biomeGridCellSize: 50
   biomeSubgridCellSize: 13
-  displacementInfluenceLevel: 0.258
+  displacementInfluenceLevel: 1
   displacementInterblendLevel: 5
   scatteringInfluenceLevel: 0.2
   biomesSettings:
