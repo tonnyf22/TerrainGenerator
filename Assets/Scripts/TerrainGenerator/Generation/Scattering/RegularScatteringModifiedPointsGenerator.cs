@@ -268,9 +268,9 @@ namespace TerrainGenerator.Generation.Scattering
             if (isApplyScaleRange)
             {
                 float rawOffsetScale = deterministicRandom.Value01(
-                    biomeIndex * scatteringIndex,
-                    placePoint.z * biomeIndex,
-                    placePoint.x * scatteringIndex);
+                    biomeIndex * scatteringIndex + placePoint.x + placePoint.z,
+                    placePoint.z * biomeIndex + placePoint.z,
+                    placePoint.x * scatteringIndex + placePoint.x);
                 scaleCalculated *= scaleMinSettings + rawOffsetScale * (scaleSettings - scaleMinSettings);
             }
             else
@@ -294,9 +294,9 @@ namespace TerrainGenerator.Generation.Scattering
             if (isApplyRotationRange)
             {
                 float rawOffsetRotation = deterministicRandom.Value01(
-                    placePoint.x * biomeIndex,
-                    biomeIndex * scatteringIndex,
-                    placePoint.z * scatteringIndex);
+                    placePoint.x * biomeIndex - placePoint.x,
+                    biomeIndex * scatteringIndex - placePoint.x - placePoint.z,
+                    placePoint.z * scatteringIndex - placePoint.z);
                 rotationValue = rotationMinSettings + rawOffsetRotation * (rotationSettings - rotationMinSettings);
             }
             else
