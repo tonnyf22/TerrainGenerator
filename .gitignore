@@ -71,3 +71,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+/[Aa]ssets/.gitignore
+/[Aa]ssets/README.md*
+/[Aa]ssets/package.json*
+/[Aa]ssets/TerrainGenerator.asmdef*
+
